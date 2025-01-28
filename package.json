@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "init": "^0.1.2",
+    "nocache": "^4.0.0",
+    "nodemon": "^3.1.9",
+    "session": "^0.1.0"
+  },
+  "name": "snack-storm",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
