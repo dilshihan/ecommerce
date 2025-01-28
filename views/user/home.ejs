@@ -1,0 +1,22 @@
+
+<body>
+    <div class="dashboard-container">
+        <div class="welcome-message">
+            <h1>Welcome, <%= message %></h1>
+            <p>We're glad to see you here.</p>
+        </div>
+        <form action="/user/logout" method="post">
+            <button class="logout-btn">Logout</button>
+        </form>
+    </div>
+    <script>
+        function preventBack() {
+            window.history.forward();
+        }
+
+        setTimeout(preventBack, 0);
+        window.onunload = function() {
+            null;
+        };
+    </script>
+</body>

@@ -14,12 +14,16 @@ app.set('views',path.join(__dirname,'views'))
 app.set('view engine','ejs')    
 app.use(express.static('public'))
 
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+
+app.use(session({secret:'mysecretkey',resave:false,saveUninitialized:true,Cookie:{maxage:1000*60*60*24}}))
+app.use(nocache())
 
 
 
 
-
-
+connectdb()
 
 app.use('/user',userroutes)
 //app.use('/admin',adminroutes)

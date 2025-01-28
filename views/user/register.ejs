@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SNACK STORM</title>
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.8/dist/sweetalert2.min.css" rel="stylesheet">
+
 </head>
 <body>
     <link rel="stylesheet" href="/style/userregister.css">
@@ -31,8 +33,10 @@
       </form>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.8/dist/sweetalert2.min.js"></script>
 
   <script>
+
     document.addEventListener("DOMContentLoaded", function(){
       document.querySelector('.register-form').addEventListener('submit', formvalidate1);
       document.querySelector('.login-form').addEventListener('submit', formvalidate2);
@@ -45,10 +49,11 @@
       var conformPassword = document.querySelector('.conformPassword').value;
 
       if(email =='' || password == '' || conformPassword == ''){
-        swal('All fields are required');
+        swal.fire('All fields are required');
         return false;
       }else if(password != conformPassword){
-        swal('Passwords do not match');
+        
+        swal.fire('Passwords do not match');
         return false;
       }
       e.target.submit();
@@ -61,7 +66,7 @@
       var password = document.querySelector('.logpassword').value;
 
       if(email =='' || password == ''){
-        swal('All fields are required');
+        swal.fire('All fields are required');
         return false;
       }
       e.target.submit();
@@ -79,9 +84,10 @@
   <script>
     const message = document.getElementById('message').value;
     if(message){
-      swal(message);
+      swal.fire(message);
     }
   </script>
+
 
 </body>
 </html>
