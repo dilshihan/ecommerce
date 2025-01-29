@@ -7,6 +7,7 @@
     "init": "^0.1.2",
     "mongoose": "^8.9.5",
     "nocache": "^4.0.0",
+    "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "session": "^0.1.0"
   },

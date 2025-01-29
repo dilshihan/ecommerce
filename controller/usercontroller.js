@@ -1,43 +1,115 @@
 const userschema = require('../model/usermodel')
 const bcrypt = require('bcrypt')
 const saltround = 10
+const nodemailer = require('nodemailer')
 
 
 
 
-const registerUser= async (req,res)=>{
-    try{
-        const {name,email,password}=req.body;
-        const user =await userschema.findOne({email})
-        if(user)return res.render('/user/register',{message:'user already exists'})
-            const hashedpassword = await bcrypt.hash(password,saltround)
-        const newuser = new userschema({email,password:hashedpassword})
-        await newuser.save()
-        res.render('/user/register',{message:'account created successfully'})
-    }catch(error){
-        res.render('/user/register',{message:'somthing is wrong'})
+const OTPs = new Map(); // Temporary store for OTPs 
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'mohddilshan1234321@gmail.com',
+        pass: 'ykbc aoyd ilqv alka'
     }
-}
+});
+
+// Function to generate OTP
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
+
+
+const registerUser = async (req, res) => {
+    try {
+        const {email, password } = req.body;
+
+        const user = await userschema.findOne({ email });
+        if (user) return res.render('user/register', { message: 'User already exists' });
+
+        const otp = generateOTP();
+        req.session.otp=otp // Store OTP temporarily
+        req.session.email=email
+        req.session.password=password
+        // Send OTP to email
+        await transporter.sendMail({
+            from: 'mohddilshan1234321@gmail.com',
+            to: email,
+            subject: 'Your OTP Code',
+            text: `Your OTP code is ${otp}`
+        });
+        res.render('user/verify', { email, message: 'OTP sent to your email' });
+
+    } catch (error) {
+        res.render('user/register', { message: 'Something went wrong' });
+    }
+};
+
+const verifyOTP = async (req, res) => {
+    try {
+        const {otp, password } = req.body;
+        const storedOTP = req.session.otp
+
+        if (!storedOTP || storedOTP !== parseInt(otp)) {
+            return res.render('user/verify', { email, message: 'Invalid OTP' });
+        } 
+        const hashedPassword = await bcrypt.hash(req.session.password, saltround);
+        const newUser = new userschema({email:req.session.email,password: hashedPassword });
+        await newUser.save();
+
+        req.session.otp = null; // Remove OTP after verification
+
+        res.render('user/home', { message: 'Account created successfully' });
+
+    }catch(error) {
+        console.log(error);
+        res.render('user/verify', { message: 'Something went wrong' });
+    }
+};
+
+const resendOTP = async (req, res) => { 
+    try { 
+        const email = req.session.email; 
+        if (!email) {
+            return res.render('user/verify', { message: 'Please start the registration process first.' });
+        }
+        const newOTP = generateOTP();
+        req.session.otp = newOTP;  
+
+        await transporter.sendMail({
+            from: 'mohddilshan1234321@gamil.com',
+            to: email,
+            subject: 'Your OTP Code',
+            text: `Your ResendOTP code is ${newOTP}`
+        });
+        res.render('user/verify', { email, message: 'A new OTP has been sent to your email' });
+
+    } catch (error) {
+        console.log(error);
+        res.render('user/verify', { message: 'Something went wrong.' });
+    }
+};
 
 
 const  loginUser = async(req,res)=>{
     try{
         const {name,email,password}=req.body
         const user  = await userschema.findOne({email})
-        if(!user) return res.render('/user/register',{message:'user does not exist'})
+        if(!user) return res.render('user/register',{message:'user does not exist'})
             const isMatch = await bcrypt.compare(password,user.password)
-        if(!isMatch) return res.render('/user/register',{message:'invalid password'})
+        if(!isMatch) return res.render('user/register',{message:'invalid password'})
             req.session.user=true;
         req.session.email=email
         res.redirect('/user/home')
     }catch(error){
-       res.render('/user/register',{message:'somthing went wrong'})
+       res.render('user/register',{message:'somthing went wrong'})
     }
 }
-
 
 const loadregister = async (req,res)=>{
     res.render('user/register',{message:''})
 }   
 
-module.exports={registerUser,loadregister,loginUser}
+
+
+module.exports={registerUser,loadregister,loginUser,verifyOTP,resendOTP}
