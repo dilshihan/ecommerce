@@ -26,7 +26,7 @@ app.use(nocache())
 connectdb()
 
 app.use('/user',userroutes)
-//app.use('/admin',adminroutes)
+app.use('/admin',adminroutes)
 
 
 

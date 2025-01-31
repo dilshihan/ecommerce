@@ -110,6 +110,10 @@ const loadregister = async (req,res)=>{
     res.render('user/register',{message:''})
 }   
 
+const logout = (req,res)=>{
+    req.session.user=null;
+    res.redirect('/user/register')
+}
 
 
-module.exports={registerUser,loadregister,loginUser,verifyOTP,resendOTP}
+module.exports={registerUser,loadregister,loginUser,verifyOTP,resendOTP,logout}
