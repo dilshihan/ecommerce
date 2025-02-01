@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - Admin Dashboard</title>
+    <link rel="stylesheet" href="/style/adminusers.css">
+</head>
+<body>
+    <!-- Previous Sidebar HTML remains the same -->
+    
+    <main class="ml-64 p-8">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Users</h1>
+                <p class="text-gray-500">Manage your users and their roles</p>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" placeholder="Search users..." class="search-input">
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="users-table">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Join Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td><span class="user-role role-admin">user</span></td>
+                        <td>Jan 15, 2024</td>
+                        <td><button class="ban-button active">Active</button></td>
+                    </tr>
+                    <tr>
+                        <td>Sarah Smith</td>
+                        <td>sarah@example.com</td>
+                        <td><span class="user-role role-editor">user</span></td>
+                        <td>Feb 1, 2024</td>
+                        <td><button class="ban-button active">Active</button></td>
+                    </tr>
+                    <tr>
+                        <td>Mike Johnson</td>
+                        <td>mike@example.com</td>
+                        <td><span class="user-role role-user">User</span></td>
+                        <td>Jan 28, 2024</td>
+                        <td><button class="ban-button banned">Banned</button></td>
+                    </tr>
+                    <!-- Add more user rows as needed -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-button">Previous</button>
+            <button class="page-button active">1</button>
+            <button class="page-button">2</button>
+            <button class="page-button">3</button>
+            <button class="page-button">Next</button>
+        </div>
+    </main>
+</body>
+</html>
