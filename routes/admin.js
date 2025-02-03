@@ -7,6 +7,9 @@ router.get('/login',adminauth.islogin,admincontreller.loadlogin)
 router.post('/login',admincontreller.login)
 router.get('/dashboard',adminauth.checksession,admincontreller.loaddashboard)
 router.get('/users',adminauth.checksession,admincontreller.loaduser)
+router.post('/ban-user',admincontreller.banUser)
+router.get('/products',admincontreller.loadProducts);
+
 
 
 

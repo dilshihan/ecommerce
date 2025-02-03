@@ -1,33 +1,91 @@
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
+/* Base styles */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: #f9fafb;
+    color: #1f2937;
 }
 
-/* Page container */
-.page-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* Sidebar (if applicable) */
+/* Sidebar styles */
 .sidebar {
-    width: 64px; /* Adjust as needed */
-    background-color: #1f2937;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 16rem;
+    background-color: rgb(201, 201, 201);
+    border-right: 1px solid #e5e7eb;
+    padding: 1.5rem;
+}
+
+.sidebar-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.sidebar-logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    text-decoration: none;
+}
+
+.nav-menu, .bottom-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    margin: 0.5rem 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #4b5563;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+.nav-link.active {
+    background-color: #3b82f6;
     color: white;
-    padding: 1rem;
 }
 
-/* Main content area */
+.nav-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+}
+
+.bottom-menu {
+    position: absolute;
+    bottom: 1.5rem;
+    width: calc(100% - 3rem);
+}
+
+.logout-link {
+    color: #ef4444;
+}
+
+/* Main content styles */
 main {
-    flex-grow: 1;
+    margin-left: 16rem;
     padding: 2rem;
-    margin-left: 64px; /* Adjust to match sidebar width */
 }
 
-/* Page header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -35,106 +93,64 @@ main {
     margin-bottom: 2rem;
 }
 
-.page-header h1 {
-    font-size: 1.875rem;
-    font-weight: bold;
-    color: #111827;
-}
-
-.page-header p {
-    color: #6b7280;
-    margin-top: 0.5rem;
-}
-
-/* Search bar */
+/* Search bar styles */
 .search-bar {
-    display: flex;
-    align-items: center;
-    background-color: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
+    position: relative;
     width: 300px;
 }
 
 .search-input {
-    border: none;
-    outline: none;
     width: 100%;
-    padding: 0.25rem;
-    margin-left: 0.5rem;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: white;
+    font-size: 0.875rem;
 }
 
 .search-icon {
-    color: #9ca3af;
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
     width: 1.25rem;
     height: 1.25rem;
+    color: #9ca3af;
 }
 
-/* Users table */
+/* Users table styles */
 .users-table {
-    width: 100%;
     background-color: white;
     border-radius: 0.5rem;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    margin-bottom: 2rem;
 }
 
-.users-table th,
-.users-table td {
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f9fafb;
     padding: 1rem;
     text-align: left;
-}
-
-.users-table th {
-    background-color: #f9fafb;
-    color: #4b5563;
-    font-weight: 600;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.users-table th:first-child {
-    border-top-left-radius: 0.5rem;
-}
-
-.users-table th:last-child {
-    border-top-right-radius: 0.5rem;
-}
-
-.users-table td {
-    color: #374151;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.users-table tr:hover {
-    background-color: #f9fafb;
-}
-
-/* User role badges */
-.user-role {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.875rem;
     font-weight: 500;
+    color: #4b5563;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.role-admin {
-    background-color: #fee2e2;
-    color: #991b1b;
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
 }
 
-.role-user {
-    background-color: #dbeafe;
-    color: #1e40af;
+tr:last-child td {
+    border-bottom: none;
 }
 
-.role-editor {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
-/* Ban/Unban buttons */
+/* Ban button styles */
 .ban-button {
     padding: 0.5rem 1rem;
     border-radius: 0.375rem;
@@ -142,48 +158,77 @@ main {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    background-color: #ef4444;
+    color: white;
     border: none;
 }
 
-.ban-button.banned {
-    background-color: #fee2e2;
-    color: #991b1b;
-}
-
-.ban-button.active {
-    background-color: #d1fae5;
-    color: #065f46;
-}
-
 .ban-button:hover {
-    opacity: 0.9;
+    background-color: #dc2626;
 }
 
-/* Pagination */
+.ban-button[data-status="Banned"] {
+    background-color: #10b981;
+}
+
+.ban-button[data-status="Banned"]:hover {
+    background-color: #059669;
+}
+
+/* Pagination styles */
 .pagination {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 1.5rem;
+    justify-content: center;
     gap: 0.5rem;
+    margin-top: 2rem;
 }
 
 .page-button {
     padding: 0.5rem 1rem;
     border: 1px solid #e5e7eb;
-    border-radius: 0.375rem;
     background-color: white;
-    color: #374151;
+    color: #4b5563;
+    border-radius: 0.375rem;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .page-button:hover {
-    background-color: #f9fafb;
+    background-color: #f3f4f6;
 }
 
 .page-button.active {
-    background-color: #2563eb;
+    background-color: #3b82f6;
     color: white;
-    border-color: #2563eb;
+    border-color: #3b82f6;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 4rem;
+        padding: 1rem;
+    }
+
+    .sidebar-logo, .nav-link span {
+        display: none;
+    }
+
+    .nav-icon {
+        margin-right: 0;
+    }
+
+    main {
+        margin-left: 4rem;
+        padding: 1rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
 }

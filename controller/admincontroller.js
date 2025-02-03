@@ -1,10 +1,11 @@
 const adminmodel = require('../model/adminmodel')
 const bcrypt = require('bcrypt')
 const usermodel = require('../model/usermodel')
+const ProductModel = require('../model/prodectmodel')
 
 
 const loadlogin  = async(req,res)=>{
-    res.render('admin/login')
+    res.render('admin/login',{message:''})
 }
 
 const login = async(req,res)=>{
@@ -43,6 +44,38 @@ const loaduser= async(req,res)=>{
     }   
 }
 
+const banUser = async (req, res) => {
+    try {
+        const { userId } = req.body; 
+        const user = await usermodel.findById(userId);
+        if (!user) {
+            return res.send({ message: "User not found" });
+        }
+        user.status = user.status === "Active" ? "Banned" : "Active";
+        await user.save();
+        res.json({ success: true, status: user.status });
+    } catch (error) {
+        console.error(error);
+    }   
+};
+
+const loadProducts = async (req, res) => {
+        try {
+            const admin = req.session.admin;
+            if (!admin) {
+                return res.redirect('/admin/login');
+            }
+            const products = await ProductModel.find({});
+            res.render('admin/products', { products });
+        } catch (error) {
+            console.log(error);
+            res.send('Something went wrong');
+        }
+    };
+    
 
 
-module.exports = {loadlogin,login,loaddashboard,loaduser}
+
+
+
+module.exports = {loadlogin,login,loaddashboard,loaduser,banUser,loadProducts}
