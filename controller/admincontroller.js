@@ -2,6 +2,8 @@ const adminmodel = require('../model/adminmodel')
 const bcrypt = require('bcrypt')
 const usermodel = require('../model/usermodel')
 const ProductModel = require('../model/prodectmodel')
+const  Categorymodel = require('../model/categorymodel')
+
 
 
 const loadlogin  = async(req,res)=>{
@@ -72,10 +74,41 @@ const loadProducts = async (req, res) => {
             res.send('Something went wrong');
         }
     };
-    
+
+const loadaddproduct = (req,res)=>{
+    res.render('admin/addproduct',{title:'Add Product'})
+}
+
+const addProduct = async (req, res) => {
+    try {
+        const { name, description, category, stock, price, image } = req.body;
+        const newProduct = new Product({
+            name,
+            description,
+            category,
+            stock,
+            price,
+            image,
+            status: 'Listed' 
+        });
+        await newProduct.save()
+        res.redirect('/admin/products');
+    }catch(error){
+      console.log(error)
+    }    
+}
+
+const loadcategory = async (req, res) => {
+    try {
+        const categories = await Categorymodel.find(); 
+        res.render("admin/category",{categories});
+    } catch (error) {
+        console.log(error)
+    }
+};
 
 
 
 
 
-module.exports = {loadlogin,login,loaddashboard,loaduser,banUser,loadProducts}
+module.exports = {loadlogin,login,loaddashboard,loaduser,banUser,loadProducts,loadaddproduct,addProduct,loadcategory}

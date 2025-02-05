@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories - Admin Dashboard</title>
+    <link rel="stylesheet" href="/style/admincategories.css">
+  
+</head>
+
+<body>
+    <main class="ml-64 p-8">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Category Management</h1>
+                <p class="text-gray-500">Manage your product categories</p>
+            </div>
+            <div style="margin-left: 410px;" class="header-actions">
+                <button style="display: flex; align-items: center; background-color: blue; color: white;padding: 0.625rem 1.25rem;border-radius: 0.5rem;border: none;font-weight: 500;cursor: pointer;transition: background-color 0.2s;" class="add-category-btn" id="addCategoryBtn">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Add Category
+                </button>
+            </div>
+        </div>
+
+        <!-- Categories Table -->
+        <div class="categories-table">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                        <th>Created Date</th>
+                        <th>Updated Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach((category) => { %>
+                        <tr>
+                            <td><%= category.name %></td>
+                            <td class="truncate max-w-xs"><%= category.description %></td>
+                            <td><%= category.createdAt %></td>
+                            <td><%= category.updatedAt %></td>
+                            <td class="space-x-2">
+                                <button class="update-button" data-categoryid="<%= category._id %>">
+                                    update
+                                </button>
+                                <button class="delete-button" data-categoryid="<%= category._id %>">
+                                    List
+                                </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <button class="page-button">Previous</button>
+            <button class="page-button active">1</button>
+            <button class="page-button">2</button>
+            <button class="page-button">3</button>
+            <button class="page-button">Next</button>   
+        </div>
+    </main>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="sidebar-logo">Admin Panel</a>
+        </div>
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/admin/dashboard" class="nav-link">Dashboard</a></li>
+                <li class="nav-item"><a href="/admin/products" class="nav-link">Products</a></li>
+                <li class="nav-item active"><a href="/admin/categories" class="nav-link">Categories</a></li>
+                <li class="nav-item"><a href="/admin/orders" class="nav-link">Orders</a></li>
+                <li class="nav-item"><a href="/admin/coupons" class="nav-link">Coupons</a></li>
+            </ul>
+            
+            <!-- Bottom Menu -->
+            <ul class="bottom-menu">
+                <li class="nav-item"><a href="#" class="nav-link">Settings</a></li>
+                <li class="nav-item"><a href="#" class="nav-link logout-link">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Edit button handler
+            const editButtons = document.querySelectorAll(".edit-button");
+            editButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const categoryId = button.getAttribute("data-categoryid");
+                    window.location.href = `/admin/categories/edit/${categoryId}`;
+                });
+            });
+
+            // Delete button handler
+            const deleteButtons = document.querySelectorAll(".delete-button");
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", async () => {
+                    const categoryId = button.getAttribute("data-categoryid");
+                    if (confirm("Are you sure you want to delete this category?")) {
+                        try {
+                            const response = await fetch("/admin/delete-category", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ categoryId }),
+                            });
+
+                            const result = await response.json();
+                            if (result.success) {
+                                alert("Category deleted successfully.");
+                                location.reload();
+                            } else {
+                                alert("Error deleting category: " + result.message);
+                            }
+                        } catch (error) {
+                            console.error("Error deleting category:", error);
+                            alert("Something went wrong!");
+                        }
+                    }
+                });
+            });
+
+            // Add category button handler
+            const addCategoryBtn = document.getElementById("addCategoryBtn");
+            addCategoryBtn.addEventListener("click", () => {
+                window.location.href = "/admin/addcategory";
+            });
+        });
+    </script>
+</body>
+</html>

@@ -47,11 +47,12 @@ const registerUser = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
     try {
-        const {otp, password } = req.body;
+        const {otp, email } = req.body;
         const storedOTP = req.session.otp
-
         if (!storedOTP || storedOTP !== parseInt(otp)) {
+            
             return res.render('user/verify', { email, message: 'Invalid OTP' });
+           
         } 
         const hashedPassword = await bcrypt.hash(req.session.password, saltround);
         const newUser = new userschema({email:req.session.email,password: hashedPassword });

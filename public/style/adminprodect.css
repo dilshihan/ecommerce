@@ -1,304 +1,228 @@
-       /* Base styles */
-       * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        background-color: #f9fafb;
-        color: #1f2937;
-    }
-    
-    /* Sidebar styles */
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 16rem;
-        background-color: rgb(201, 201, 201);
-        border-right: 1px solid #e5e7eb;
-        padding: 1.5rem;
-    }
-    
-    .sidebar-header {
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .sidebar-logo {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1f2937;
-        text-decoration: none;
-    }
-    
-    .nav-menu, .bottom-menu {
-        list-style: none;
-        padding: 0;
-    }
-    
-    .nav-item {
-        margin: 0.5rem 0;
-    }
-    
-    .nav-link {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1rem;
-        color: #4b5563;
-        text-decoration: none;
-        border-radius: 0.5rem;
-        transition: all 0.2s;
-    }
-    
-    .nav-link:hover {
-        background-color: #f3f4f6;
-        color: #1f2937;
-    }
-    
-    .nav-link.active {
-        background-color: #3b82f6;
-        color: white;
-    }
-    
-    .nav-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-        margin-right: 0.75rem;
-    }
-    
-    .bottom-menu {
-        position: absolute;
-        bottom: 1.5rem;
-        width: calc(100% - 3rem);
-    }
-    
-    .logout-link {
-        color: #ef4444;
-    }
-    
-    /* Main content styles */
-    main {
-        margin-left: 16rem;
-        padding: 2rem;
-    }
-    
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-    
-    /* Search bar styles */
-    .search-bar {
-        position: relative;
-        width: 300px;
-    }
-    
-    .search-input {
-        width: 100%;
-        padding: 0.75rem 1rem 0.75rem 2.5rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 0.5rem;
-        background-color: white;
-        font-size: 0.875rem;
-    }
-    
-    .search-icon {
-        position: absolute;
-        left: 0.75rem;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 1.25rem;
-        height: 1.25rem;
-        color: #9ca3af;
-    }
-    
-    /* Users table styles */
-    .users-table {
-        background-color: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
-    
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    
-    th {
-        background-color: #f9fafb;
-        padding: 1rem;
-        text-align: left;
-        font-weight: 500;
-        color: #4b5563;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    td {
-        padding: 1rem;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    tr:last-child td {
-        border-bottom: none;
-    }
-    
-    /* Ban button styles */
-    .ban-button {
-        padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        background-color: #ef4444;
-        color: white;
-        border: none;
-    }
-    
-    .ban-button:hover {
-        background-color: #dc2626;
-    }
-    
-    .ban-button[data-status="Banned"] {
-        background-color: #10b981;
-    }
-    
-    .ban-button[data-status="Banned"]:hover {
-        background-color: #059669;
-    }
-    
-    /* Pagination styles */
-    .pagination {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-top: 2rem;
-    }
-    
-    .page-button {
-        padding: 0.5rem 1rem;
-        border: 1px solid #e5e7eb;
-        background-color: white;
-        color: #4b5563;
-        border-radius: 0.375rem;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    
-    .page-button:hover {
-        background-color: #f3f4f6;
-    }
-    
-    .page-button.active {
-        background-color: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
-    }
-    
-    /* Responsive styles */
-    @media (max-width: 768px) {
-        .sidebar {
-            width: 4rem;
-            padding: 1rem;
-        }
-    
-        .sidebar-logo, .nav-link span {
-            display: none;
-        }
-    
-        .nav-icon {
-            margin-right: 0;
-        }
-    
-        main {
-            margin-left: 4rem;
-            padding: 1rem;
-        }
-    
-        .page-header {
-            flex-direction: column;
-            gap: 1rem;
-        }
-    
-        .search-bar {
-            width: 100%;
-        }
-    }
-          
-    .product-image {
-        width: 64px;
-        height: 64px;
-        object-fit: cover;
-        border-radius: 0.375rem;
-        border: 1px solid #e5e7eb;
-    }
-    
-    .edit-button {
-        padding: 0.5rem;
-        border-radius: 0.375rem;
-        background-color: #3b82f6;
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .edit-button:hover {
-        background-color: #2563eb;
-    }
-    
-    .list-button {
-        padding: 0.5rem 1rem;
-        border-radius: 0.375rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        background-color: #10b981;
-        color: white;
-        border: none;
-    }
-    
-    .list-button:hover {
-        background-color: #059669;
-    }
-    
-    .list-button.unlisted {
-        background-color: #ef4444;
-    }
-    
-    .list-button.unlisted:hover {
-        background-color: #dc2626;
-    }
-    
-    /* Style for truncated description */
-    .truncate {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .add-product-button {
-        background-color: #22c55e;
-        color: white;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-        border: none;
-        cursor: pointer;
-    }
-    
-    .add-product-button:hover {
-        background-color: #16a34a; 
-    }
+/* General Layout */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+    margin: 0;
+    padding: 0;
+}
+
+.ml-64 {
+    margin-left: 16rem;
+}
+
+.p-8 {
+    padding: 2rem;
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 300px;
+}
+
+.search-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #9ca3af;
+    margin-right: 0.5rem;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 0.875rem;
+}
+
+.add-product-btn:hover {
+    background-color: #4338ca;
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Product Card */
+.product-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Image */
+.product-image {
+    position: relative;
+    height: 200px;
+    background-color: #f3f4f6;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.stock-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.in-stock {
+    background-color: #10b981;
+    color: white;
+}
+
+.out-of-stock {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* Product Info */
+.product-info {
+    padding: 1.25rem;
+}
+
+.product-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.25rem 0;
+}
+
+.product-category {
+    display: inline-block;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.product-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Product Details */
+.product-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.product-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.product-stock {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Product Actions */
+.product-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.edit-btn {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+}
+
+.delete-btn {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.delete-btn:hover {
+    background-color: #fecaca;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.page-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e5e7eb;
+    background-color: white;
+    color: #4b5563;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.page-button:hover {
+    background-color: #f3f4f6;
+}
+
+.page-button.active {
+    background-color: #4f46e5;
+    color: white;
+    border-color: #4f46e5;
+}   

@@ -9,7 +9,9 @@ router.get('/dashboard',adminauth.checksession,admincontreller.loaddashboard)
 router.get('/users',adminauth.checksession,admincontreller.loaduser)
 router.post('/ban-user',admincontreller.banUser)
 router.get('/products',admincontreller.loadProducts);
-
+router.get('/addproduct',adminauth.checksession,admincontreller.loadaddproduct)
+router.post('/addproduct',admincontreller.addProduct);
+router.get('/category',admincontreller.loadcategory)
 
 
 

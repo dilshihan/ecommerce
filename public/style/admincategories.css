@@ -1,0 +1,230 @@
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+        }
+        
+        .sidebar-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+        
+        .nav-menu {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .nav-item {
+            margin: 1rem 0;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-link:hover {
+            background-color: #495057;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .nav-icon {
+            margin-right: 0.5rem;
+        }
+        
+        .bottom-menu {
+            margin-top: auto;
+        }
+        
+        .logout-link {
+            color: red;
+        }
+        
+        .logout-link:hover {
+            background-color: #dc3545;
+        }
+        
+        /* Main Content */
+        main {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+        
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .page-header .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .page-header .header-actions button {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .page-header .header-actions button:hover {
+            background-color: #0056b3;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .search-bar .search-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+        }
+        
+        .search-bar .search-input {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+        
+        /* Categories Table */
+        .categories-table {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .categories-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .categories-table th, .categories-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .categories-table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        
+        .categories-table .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .categories-table .action-buttons button {
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .categories-table .action-buttons button.update-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .categories-table .action-buttons button.update-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .categories-table .action-buttons button.delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .categories-table .action-buttons button.delete-btn:hover {
+            background-color: #c82333;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .page-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin: 0 0.25rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .page-button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .page-button.active {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        .page-button:disabled {
+            background-color: #e0e0e0;
+            color: #b0b0b0;
+            cursor: not-allowed;
+        }
+        
+        /* Add Category Button */
+        .add-category-btn {
+            display: flex;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 2rem;
+        }
+        
+        .add-category-btn svg {
+            margin-right: 0.5rem;
+        }
+        
+        .add-category-btn:hover {
+            background-color: #0056b3;
+        }
