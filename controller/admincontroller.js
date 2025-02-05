@@ -107,8 +107,27 @@ const loadcategory = async (req, res) => {
     }
 };
 
+const loadaddcategory = async(req,res)=>{
+    res.render('admin/addcategory')
+}
+
+const addcategory = async(req,res)=>{
+    const {name,description}=req.body
+    try{
+        const newcategory = new Categorymodel({name,description, createdAt: new Date()})
+        await newcategory.save()
+        res.json({ success: true });
+
+    }catch(error){
+        console.log(error)
+    }
+}
 
 
 
 
-module.exports = {loadlogin,login,loaddashboard,loaduser,banUser,loadProducts,loadaddproduct,addProduct,loadcategory}
+
+module.exports = {loadlogin,
+    login,loaddashboard,loaduser,banUser,
+    loadProducts,loadaddproduct,addProduct,
+    loadcategory,loadaddcategory,addcategory}

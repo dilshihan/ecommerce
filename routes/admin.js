@@ -12,7 +12,8 @@ router.get('/products',admincontreller.loadProducts);
 router.get('/addproduct',adminauth.checksession,admincontreller.loadaddproduct)
 router.post('/addproduct',admincontreller.addProduct);
 router.get('/category',admincontreller.loadcategory)
-
+router.get('/addcategory',admincontreller.loadaddcategory)
+router.post('/addcategory',admincontreller.addcategory)
 
 
 
