@@ -43,11 +43,15 @@
                         <tr>
                             <td><%= category.name %></td>
                             <td class="truncate max-w-xs"><%= category.description %></td>
-                            <td><%= category.createdAt %></td>
-                            <td><%= category.updatedAt %></td>
+                            <td>
+                                <%= new Date(category.createdAt).toDateString() + " " + new Date(category.createdAt).toLocaleTimeString('en-GB', { hour12: false }) %>
+                            </td>
+                            <td>
+                                <%= new Date(category.updatedAt).toDateString() + " " + new Date(category.updatedAt).toLocaleTimeString('en-GB', { hour12: false }) %>
+                            </td>
                             <td class="space-x-2">
                                 <button class="update-button" data-categoryid="<%= category._id %>">
-                                    update
+                                    Update
                                 </button>
                                 <button class="list-button" data-categoryid="<%= category._id %>" data-listed="<%= category.isListed %>">
                                     <%= category.isListed ? "Unlist" : "List" %>
@@ -56,6 +60,7 @@
                         </tr>
                     <% }); %>
                 </tbody>
+                
             </table>
         </div>
 
@@ -93,7 +98,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/products" class="nav-link active">
+                    <a href="/admin/products" class="nav-link">
                         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                         </svg>
@@ -109,7 +114,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/category" class="nav-link">
+                    <a href="/admin/category" class="nav-link active">
                         <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                         </svg>
@@ -143,73 +148,64 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Edit button handler
+            // update button handler
             const editButtons = document.querySelectorAll(".update-button");
             editButtons.forEach(button => {
                 button.addEventListener("click", () => {
                     const categoryId = button.getAttribute("data-categoryid");
-                    window.location.href = `/admin/categories/edit/${categoryId}`;
+                    window.location.href = `/admin/categories/update/${categoryId}`;
                 });
             });
 
             // List/Unlist button handler
-            const listButtons = document.querySelectorAll(".list-button");
-            listButtons.forEach(button => {
-                button.addEventListener("click", async () => {
-                    const categoryId = button.getAttribute("data-categoryid");
-                    const isListed = button.getAttribute("data-listed") === "true"; // Check if it's currently listed
+            document.querySelectorAll(".list-button").forEach(button => {
+    button.addEventListener("click", async () => {
+        const categoryId = button.getAttribute("data-categoryid");
+        const isListed = button.getAttribute("data-listed") === "true"; 
 
-                    const actionText = isListed ? "unlist" : "list"; // Toggle action
-                    const confirmationText = isListed
-                        ? "Are you sure you want to unlist this category?"
-                        : "Are you sure you want to list this category?";
+        const actionText = isListed ? "unlist" : "list";
+        const confirmationText = isListed
+            ? "Are you sure you want to unlist this category?"
+            : "Are you sure you want to list this category?";
 
-                    const result = await Swal.fire({
-                        title: 'Are you sure?',
-                        text: confirmationText,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: `Yes, ${actionText} it!`
-                    });
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: confirmationText,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: `Yes, ${actionText} it!`
+        });
 
-                    if (result.isConfirmed) {
-                        try {
-                            const response = await fetch("/admin/toggle-category-listing", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({ categoryId, isListed: !isListed }), // Toggle the listed state
-                            });
-
-                            const result = await response.json();
-                            if (result.success) {
-                                Swal.fire(
-                                    `${actionText.charAt(0).toUpperCase() + actionText.slice(1)}d!`,
-                                    `Category has been ${actionText}ed.`,
-                                    'success'
-                                );
-                                location.reload();
-                            } else {
-                                Swal.fire(
-                                    'Error!',
-                                    'Error updating category listing: ' + result.message,
-                                    'error'
-                                );
-                            }
-                        } catch (error) {
-                            console.error("Error updating category:", error);
-                            Swal.fire(
-                                'Error!',
-                                'Something went wrong!',
-                                'error'
-                            );
-                        }
-                    }
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch("/admin/categories/listing", { 
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ categoryId, isListed: !isListed }),
                 });
-            });
+
+                const result = await response.json();
+                if (result.success) {
+                    Swal.fire(
+                        `${actionText.charAt(0).toUpperCase() + actionText.slice(1)}ed!`,
+                        `Category has been ${actionText}ed.`,
+                        'success'
+                    );
+
+                    button.setAttribute("data-listed", (!isListed).toString());
+                    button.textContent = isListed ? "List" : "Unlist"; 
+                } else {
+                    Swal.fire('Error!', 'Error updating category listing: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error("Error updating category:", error);
+                Swal.fire('Error!', 'Something went wrong!', 'error');
+            }
+        }
+    });
+});
 
             // Add category button handler
             const addCategoryBtn = document.getElementById("addCategoryBtn");

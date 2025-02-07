@@ -5,58 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product</title>
     <link rel="stylesheet" href="/style/addproduct.css"> 
+    <!-- Cropper.js -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
 </head>
 <body>
         <main class="content">
             <h1>Add Product</h1>
 
-            <form id="addProductForm" action="/admin/addproduct" method="POST">
-                <div class="form-group">
-                    <label for="productName">Product Name</label>
-                    <input type="text" id="productName" name="productName" required>
-                </div>
+         <form id="addProductForm" action="/admin/addproduct" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="productName">Product Name</label>
+        <input type="text" id="productName" name="name" required>
+    </div>
 
-                <div class="form-group">
-                    <label for="productDescription">Description</label>
-                    <textarea id="productDescription" name="productDescription" required></textarea>
-                </div>
+    <div class="form-group">
+        <label for="productDescription">Description</label>
+        <textarea id="productDescription" name="description" required></textarea>
+    </div>
 
-                <div class="form-group">
-                    <label for="productCategory">Category</label>
-                    <select id="productCategory" name="productCategory" required>
-                        <option value="">Select Category</option>
-                        <option value="burger">burger</option>
-                        <option value="pizza">pizza</option>
-                        <option value="drings">drings</option>
-                    </select>
-                </div>
+    <div class="form-group">
+        <label for="productCategory">Category</label>
+        <select id="productCategory" name="category" required>
+            <option value="">Select Category</option>
+            <option value="burger">Burger</option>
+            <option value="pizza">Pizza</option>
+            <option value="drinks">Drinks</option>
+        </select>
+    </div>
 
-                <div class="form-group">
-                    <label for="productStock">Stock</label>
-                    <input type="number" id="productStock" name="productStock" required>
-                </div>
+    <div class="form-group">
+        <label for="productStock">Stock</label>
+        <input type="number" id="productStock" name="stock" required>
+    </div>
 
-                <div class="form-group">
-                    <label for="productPrice">Price</label>
-                    <input type="number" id="productPrice" name="productPrice" required>
-                </div>
-                <div class="form-group">
-                    <label for="productImage">Product Image</label>
-                    <input type="file" id="productImage" name="productImage" required>
-                </div>
-                <div class="form-group">
-                    <label for="productImage">Product Image</label>
-                    <input type="file" id="productImage" name="productImage" required>
-                </div>
-                <div class="form-group">
-                    <label for="productImage">Product Image</label>
-                    <input type="file" id="productImage" name="productImage" required>
-                </div>
+    <div class="form-group">
+        <label for="productPrice">Price</label>
+        <input type="number" id="productPrice" name="price" required>
+    </div>
+    
 
-                <button type="submit" class="submit-btn">Add Product</button>
-            </form>
+    <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" id="productImage" accept="image/*">
+        <div class="image-preview">
+            <img id="previewImage" src="" style="max-width: 100%; display: none;">
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" id="productImage" accept="image/*">
+        <div class="image-preview">
+            <img id="previewImage" src="" style="max-width: 100%; display: none;">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Product Image</label>
+        <input type="file" id="productImage" accept="image/*">
+        <div class="image-preview">
+            <img id="previewImage" src="" style="max-width: 100%; display: none;">
+        </div>
+    </div>
+    
+    <div id="cropperModal">
+        <div>
+            <span onclick="closeModal()">✖</span>
+            <h3>Crop Image</h3>
+            <img id="cropperImage" style="max-width: 100%;">
+            <button onclick="cropImage()">Crop & Save</button>
+        </div>
+    </div>
+    <div id="cropperModal">
+        <div>
+            <span onclick="closeModal()">✖</span>
+            <h3>Crop Image</h3>
+            <img id="cropperImage" style="max-width: 100%;">
+            <button onclick="cropImage()">Crop & Save</button>
+        </div>
+    </div>
+    <div id="cropperModal">
+        <div>
+            <span onclick="closeModal()">✖</span>
+            <h3>Crop Image</h3>
+            <img id="cropperImage" style="max-width: 100%;">
+            <button onclick="cropImage()">Crop & Save</button>
+        </div>
+    </div>
+    
+
+    <button type="submit" class="submit-btn">Add Product</button>
+</form>
+
+            
+            
         </main>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <script>
+        let cropper;
+        let selectedFile;
+
+        document.getElementById('productImage').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                selectedFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cropperImage').src = e.target.result;
+                    openModal();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function openModal() {
+            document.getElementById('cropperModal').style.display = 'flex';
+            const image = document.getElementById('cropperImage');
+            cropper = new Cropper(image, {
+                aspectRatio: 1, // Adjust aspect ratio as needed
+                viewMode: 2,
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('cropperModal').style.display = 'none';
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+        }
+
+        function cropImage() {
+            const canvas = cropper.getCroppedCanvas();
+            canvas.toBlob(blob => {
+                const previewImage = document.getElementById('previewImage');
+                previewImage.src = URL.createObjectURL(blob);
+                previewImage.style.display = 'block';
+
+                // Convert blob to file and store it for form submission
+                const croppedFile = new File([blob], selectedFile.name, { type: "image/png" });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(croppedFile);
+                document.getElementById('productImage').files = dataTransfer.files;
+
+                closeModal();
+            }, 'image/png');
+        }
+    </script>
+
     <!-- Sidebar -->
 <aside class="sidebar">
     <div class="sidebar-header">

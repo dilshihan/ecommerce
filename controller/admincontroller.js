@@ -75,28 +75,38 @@ const loadProducts = async (req, res) => {
         }
     };
 
-const loadaddproduct = (req,res)=>{
+const loadaddproduct =async (req,res)=>{
     res.render('admin/addproduct',{title:'Add Product'})
 }
 
 const addProduct = async (req, res) => {
     try {
-        const { name, description, category, stock, price, image } = req.body;
-        const newProduct = new Product({
-            name,
-            description,
-            category,
-            stock,
-            price,
-            image,
-            status: 'Listed' 
+        
+        const { name, price, stock, description, category } = req.body;
+        
+        // Extract filenames for multiple images
+        const images = req.files ? req.files.map(file => file.filename) : [];
+
+        if (!name || !price || !category || !description||!stock) {
+            return res.status(400).send("all field are required");
+        }
+        const newProduct = new ProductModel({ 
+            name, 
+            price, 
+            stock, 
+            description, 
+            image:images, 
+            category 
         });
-        await newProduct.save()
+
+        await newProduct.save();
         res.redirect('/admin/products');
-    }catch(error){
-      console.log(error)
-    }    
-}
+
+    } catch (error) {
+        console.error(error);
+        
+    }
+};
 
 const loadcategory = async (req, res) => {
     try {
@@ -111,17 +121,86 @@ const loadaddcategory = async(req,res)=>{
     res.render('admin/addcategory')
 }
 
-const addcategory = async(req,res)=>{
-    const {name,description}=req.body
-    try{
-        const newcategory = new Categorymodel({name,description, createdAt: new Date()})
-        await newcategory.save()
-        res.json({ success: true });
+const addcategory = async (req, res) => {
+    const { name, description } = req.body;
 
-    }catch(error){
-        console.log(error)
+    try {
+        const existingCategory = await Categorymodel.findOne({ name });
+
+        if (existingCategory) {
+            return res.status(400).json({ success: false, message: "Category already exists!" });
+        }
+
+        const newCategory = new Categorymodel({ name, description});
+        await newCategory.save();
+
+        res.json({ success: true, message: "Category added successfully!" });
+
+    } catch (error) {
+        console.error(error);
     }
-}
+};
+
+const loadUpdateCategory = async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const category = await Categorymodel.findById(categoryId);
+
+        if (!category) {
+            return res.status(404).send("Category not found");
+        }
+
+        res.render("admin/updatecategory", { category });
+    } catch (error) {
+        console.error( error);
+    }
+};
+
+const updateCategory = async (req, res) => {
+    try {
+        const { name, description } = req.body;
+        const categoryId = req.params.id;
+
+        const updatedCategory = await Categorymodel.findByIdAndUpdate(
+            categoryId,
+            { name, description},
+            { new: true }
+        );
+
+        if (!updatedCategory) {
+            return res.status(404).json({ success: false, message: "Category not found" });
+        }
+
+        res.json({ success: true, message: "Category updated successfully" });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const Categorylisting = async (req, res) => {
+    try {
+        const { categoryId, isListed } = req.body; 
+
+        if (typeof isListed !== "boolean") {
+            return res.status(400).json({ success: false, message: "Invalid isListed value" });
+        }
+
+        const category = await Categorymodel.findById(categoryId);
+        if (!category) {
+            return res.status(404).json({ success: false, message: "Category not found" });
+        }
+
+        
+        category.isListed = isListed;
+        await category.save();
+
+        res.json({ success: true, isListed: category.isListed });
+    } catch (error) {
+        console.error(error);
+        
+    }
+};
+
 
 
 
@@ -130,4 +209,5 @@ const addcategory = async(req,res)=>{
 module.exports = {loadlogin,
     login,loaddashboard,loaduser,banUser,
     loadProducts,loadaddproduct,addProduct,
-    loadcategory,loadaddcategory,addcategory}
+    loadcategory,loadaddcategory,addcategory,
+    loadUpdateCategory,updateCategory,Categorylisting}

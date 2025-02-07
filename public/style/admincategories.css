@@ -245,4 +245,108 @@
             background-color: #991b1b;
             color: #fff;
           }
+      /* Table Button Styles */
+        .update-button,
+        .list-button {
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        }
+
+      /* Update Button Style */
+       .update-button {
+       background-color: #3b82f6;  /* Blue color */
+       color: white;
+       margin-right: 0.5rem;
+      }
+
+      .update-button:hover {
+       background-color: #2563eb;
+       transform: translateY(-1px);
+       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* List Button Style */
+      .list-button {
+      background-color: #10b981;  /* Green color */
+      color: white;
+      }
+
+      /* Style for Unlist state */
+      .list-button[data-listed="true"] {
+      background-color: #ef4444;  /* Red color */
+      }
+
+      .list-button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+      /* Button Container Style */
+      .space-x-2 {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+     /* Active/Focus States */
+    .update-button:focus,
+    .list-button:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    }
+
+    /* Additional Table Styles */
+    .categories-table {
+    margin-top: 2rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    }
+
+    .categories-table table {
+    width: 100%;
+    border-collapse: collapse;
+    }
+
+    .categories-table th {
+    background-color: #f8fafc;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: #475569;
+    border-bottom: 1px solid #e2e8f0;
+   }
+
+    .categories-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    color: #1e293b;
+    }
+
+    /* Hover effect for table rows */
+    .categories-table tbody tr:hover {
+    background-color: #f8fafc;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+    .update-button,
+    .list-button {
+     padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+    }
+    
+    .space-x-2 {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
           
