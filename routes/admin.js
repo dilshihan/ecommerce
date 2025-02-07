@@ -11,7 +11,7 @@ router.get('/users',adminauth.checksession,admincontreller.loaduser)
 router.post('/ban-user',admincontreller.banUser)
 router.get('/products',admincontreller.loadProducts);
 router.get('/addproduct',adminauth.checksession,admincontreller.loadaddproduct)
-router.post('/addproduct',upload.array('image' ,3),admincontreller.addProduct);
+router.post('/addproduct', upload, admincontreller.addProduct);
 router.get('/category',admincontreller.loadcategory)
 router.get('/addcategory',admincontreller.loadaddcategory)
 router.post('/addcategory',admincontreller.addcategory)

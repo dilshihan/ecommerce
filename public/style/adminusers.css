@@ -12,73 +12,73 @@ body {
 }
 
 /* Sidebar styles */
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 16rem;
-    background-color: rgb(201, 201, 201);
-    border-right: 1px solid #e5e7eb;
-    padding: 1.5rem;
-}
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 16rem;
+        background-color: rgb(201, 201, 201);
+        border-right: 1px solid #e5e7eb;
+        padding: 1.5rem;
+    }
 
-.sidebar-header {
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-}
+    .sidebar-header {
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
 
-.sidebar-logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1f2937;
-    text-decoration: none;
-}
+    .sidebar-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        text-decoration: none;
+    }
 
-.nav-menu, .bottom-menu {
-    list-style: none;
-    padding: 0;
-}
+    .nav-menu, .bottom-menu {
+        list-style: none;
+        padding: 0;
+    }
 
-.nav-item {
-    margin: 0.5rem 0;
-}
+    .nav-item {
+        margin: 0.5rem 0;
+    }
 
-.nav-link {
-    display: flex;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    color: #4b5563;
-    text-decoration: none;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
-}
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        color: #4b5563;
+        text-decoration: none;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+    }
 
-.nav-link:hover {
-    background-color: #f3f4f6;
-    color: #1f2937;
-}
+    .nav-link:hover {
+        background-color: #f3f4f6;
+        color: #1f2937;
+    }
 
-.nav-link.active {
-    background-color: #3b82f6;
-    color: white;
-}
+    .nav-link.active {
+        background-color: #3b82f6;
+        color: white;
+    }
 
-.nav-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-right: 0.75rem;
-}
+    .nav-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: 0.75rem;
+    }
 
-.bottom-menu {
-    position: absolute;
-    bottom: 1.5rem;
-    width: calc(100% - 3rem);
-}
+    .bottom-menu {
+        position: absolute;
+        bottom: 1.5rem;
+        width: calc(100% - 3rem);
+    }
 
-.logout-link {
-    color: #ef4444;
-}
+    .logout-link {
+        color: #ef4444;
+    }
 
 /* Main content styles */
 main {
