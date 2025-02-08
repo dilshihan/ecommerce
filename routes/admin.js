@@ -12,12 +12,14 @@ router.post('/ban-user',admincontreller.banUser)
 router.get('/products',admincontreller.loadProducts);
 router.get('/addproduct',adminauth.checksession,admincontreller.loadaddproduct)
 router.post('/addproduct', upload, admincontreller.addProduct);
+router.post('/products',admincontreller.Productlisting)
 router.get('/category',admincontreller.loadcategory)
 router.get('/addcategory',admincontreller.loadaddcategory)
 router.post('/addcategory',admincontreller.addcategory)
 router.get('/categories/update/:id', admincontreller.loadUpdateCategory);
 router.post('/categories/update/:id', admincontreller.updateCategory)
 router.post('/categories/listing', admincontreller.Categorylisting);
+
 
 
 

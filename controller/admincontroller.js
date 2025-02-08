@@ -201,6 +201,26 @@ const Categorylisting = async (req, res) => {
     }
 };
 
+const Productlisting = async (req, res) => {
+    try { 
+        const { productId, isListed } = req.body;
+        if (typeof isListed !== "boolean") {
+            return res.status(400).json({ success: false, message: "Invalid isListed value" });
+        }
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        product.isListed =isListed;
+        await product.save();
+
+        res.json({ success: true, isListed: product.isListed });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+
 
 
 
@@ -210,4 +230,5 @@ module.exports = {loadlogin,
     login,loaddashboard,loaduser,banUser,
     loadProducts,loadaddproduct,addProduct,
     loadcategory,loadaddcategory,addcategory,
-    loadUpdateCategory,updateCategory,Categorylisting}
+    loadUpdateCategory,updateCategory,Categorylisting,
+    Productlisting}

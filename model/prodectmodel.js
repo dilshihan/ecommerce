@@ -1,3 +1,4 @@
+const { status } = require("init");
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
@@ -7,7 +8,11 @@ const productSchema = new mongoose.Schema({
     description: { type: String, trim: true },
     image: { type: [String], required: true }, 
     category: { type:String,  },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    isListed: {
+        type: Boolean,
+        default: true,  
+    }
 });
 
 const Product = mongoose.model("Product", productSchema);
