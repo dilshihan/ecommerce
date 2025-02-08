@@ -1,7 +1,9 @@
 const userschema = require('../model/usermodel')
+const Productmodel = require('../model/prodectmodel')
 const bcrypt = require('bcrypt')
 const saltround = 10
 const nodemailer = require('nodemailer')
+
 
 
 
@@ -91,7 +93,6 @@ const resendOTP = async (req, res) => {
     }
 };
 
-
 const  loginUser = async(req,res)=>{
     try{
         const {name,email,password}=req.body
@@ -111,10 +112,30 @@ const loadregister = async (req,res)=>{
     res.render('user/register',{message:''})
 }   
 
+const Loadhome = async (req, res) => {
+    try {
+        const products = await Productmodel.find({}); // Fetch all products
+        res.render("user/home", { products }); // Pass products to EJS
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
 const logout = (req,res)=>{
     req.session.user=null;
     res.redirect('/user/register')
 }
 
+const loadmenu= async (req, res) => {
+        try {
+            const products = await Productmodel.find({});
+            res.render("user/menu", { products });
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
-module.exports={registerUser,loadregister,loginUser,verifyOTP,resendOTP,logout}
+
+module.exports={registerUser,loadregister,loginUser,
+      verifyOTP,resendOTP,logout,Loadhome,loadmenu}
