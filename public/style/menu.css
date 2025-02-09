@@ -1,0 +1,19 @@
+/* Product link styling */
+.text-decoration-none {
+    color: inherit !important;
+}
+
+.text-decoration-none:hover {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+/* Product name styling */
+.text-decoration-none h5 {
+    color: #222831 !important;  /* or your desired text color */
+}
+
+/* If you have price or other text elements that need specific colors */
+.text-decoration-none .price {
+    color: #ffbe33 !important;  /* or your desired price color */
+}

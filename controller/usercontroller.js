@@ -135,7 +135,19 @@ const loadmenu= async (req, res) => {
             console.error(error)
         }
     }
-
+const Productdetails = async (req, res) => {
+        try { 
+            const products = await Productmodel.findById(req.params.id);
+            if (!products) {
+                return res.redirect('/user/menu');
+            }
+            
+            res.render('user/productdetails', { products });
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
 module.exports={registerUser,loadregister,loginUser,
-      verifyOTP,resendOTP,logout,Loadhome,loadmenu}
+               verifyOTP,resendOTP,logout,Loadhome,
+               loadmenu,Productdetails}

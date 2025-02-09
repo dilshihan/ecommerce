@@ -1,0 +1,305 @@
+/* Product Details Page Styles */
+.product-info .price-area {
+    font-size: 2rem;
+    color: #ffbe33;
+    font-weight: bold;
+  }
+  
+  .product-info .description-area,
+  .product-info .ingredients-area {
+    color: #212529;
+  }
+  
+  .product-info .description-area h5,
+  .product-info .ingredients-area h5 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #000000;
+  }
+  
+  .product-info .action-area {
+    margin-top: 2rem;
+  }
+  
+  .product-info .action-area .btn {
+    padding: 10px 30px;
+  }
+  
+  .product-info .action-area .btn-primary {
+    background-color: #ffbe33;
+    border-color: #ffbe33;
+  }
+  
+  .product-info .action-area .btn-primary:hover {
+    background-color: #e69c00;
+    border-color: #e69c00;
+  }
+  .header_section {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 999;
+}
+
+.navbar-brand {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffbe33 !important;
+    text-transform: uppercase;
+}
+
+.navbar-brand:hover {
+    color: #fff !important;
+}
+
+.custom_nav-container .navbar-nav {
+    margin: auto;
+}
+
+.custom_nav-container .nav-item {
+    padding: 0 20px;
+}
+
+.custom_nav-container .nav-link {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.custom_nav-container .nav-link:hover,
+.custom_nav-container .nav-item.active .nav-link {
+    color: #ffbe33;
+}
+
+.user_option {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.user_option a {
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.user_option a:hover {
+    color: #ffbe33;
+}
+
+.cart_link {
+    position: relative;
+}
+
+.cart_link svg {
+    width: 20px;
+    height: 20px;
+    fill: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.cart_link:hover svg {
+    fill: #ffbe33;
+}
+
+.nav_search-btn {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.nav_search-btn:hover {
+    color: #ffbe33;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .custom_nav-container .nav-item {
+        padding: 0 10px;
+    }
+
+    .navbar-toggler {
+        border: 1px solid #ffffff;
+        padding: 4px 8px;
+    }
+
+    .navbar-toggler span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background-color: #ffffff;
+        margin: 4px 0;
+    }
+
+    .user_option {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .navbar-brand {
+        font-size: 24px;
+    }
+
+    .custom_nav-container .navbar-nav {
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .custom_nav-container .nav-item {
+        padding: 5px 0;
+    }
+}
+/* Product Details Section */
+.food_section.layout_padding {
+    padding: 80px 0;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+.img-box {
+    padding: 20px;
+}
+
+.img-box img {
+    max-height: 600px;
+    width: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.detail-box {
+    padding: 30px;
+}
+
+.heading_container h2 {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    color: #222831;
+}
+
+.price-area {
+    font-size: 2.5rem;
+    color: #ffbe33;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.description-area {
+    margin-bottom: 40px;
+}
+
+.description-area h5 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.description-area p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #666;
+}
+
+.action-area {
+    margin-top: 40px;
+}
+
+.action-area .btn {
+    padding: 12px 35px;
+    font-size: 1.1rem;
+}
+
+/* Compact Footer */
+.footer_section {
+    padding: 20px 0;
+    background-color: #222831;
+    font-size: 0.9rem;
+}
+
+.footer-col {
+    margin-bottom: 15px;
+}
+
+.footer_contact h4,
+.footer-col h4 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.footer_detail .footer-logo {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.footer_detail p {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+.footer_social {
+    margin-top: 10px;
+}
+
+.footer_social a {
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+    font-size: 0.9rem;
+}
+
+.contact_link_box a {
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.footer-info {
+    margin-top: 15px;
+    padding-top: 10px;
+    font-size: 0.8rem;
+}
+.category-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #ffbe33;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    margin-left: 15px;
+}
+
+.product-meta {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.product-meta .label {
+    font-weight: 600;
+    color: #222831;
+    margin-right: 8px;
+}
+
+.stock-info .in-stock {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.stock-info .out-of-stock {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.category-info .value {
+    color: #666;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+}
