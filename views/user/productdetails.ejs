@@ -138,8 +138,15 @@
       <div class="row">
         <div class="col-md-6">
           <div class="img-box">
-            <img src="<%= products.image %>" alt="<%= products.name %>" class="img-fluid rounded">
+            <img src="/uploads/<%= products.image[0] %>" alt="<%= products.name %>">
           </div>
+         <!-- Thumbnail Images -->
+        <div class="thumbnail-container">
+         <% products.image.forEach(function(img) { %>
+        <img src="/uploads/<%= img %>" alt="<%= products.name %>" class="thumbnail" onclick="changeImage(this)">
+       <% }); %>
+       </div>
+          
         </div>
         <div class="col-md-6">
           <div class="detail-box">
@@ -290,6 +297,13 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
+  <script>
+    function changeImage(thumbnail) {
+      document.getElementById("mainImage").src = thumbnail.src;
+    }
+  </script>
+  
+  
 
 </body>
 </html>

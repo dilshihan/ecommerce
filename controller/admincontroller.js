@@ -73,7 +73,7 @@ const loadProducts = async (req, res) => {
             console.log(error);
             res.send('Something went wrong');
         }
-    };
+};
 
 const loadaddproduct =async (req,res)=>{
     res.render('admin/addproduct',{title:'Add Product'})
@@ -105,6 +105,60 @@ const addProduct = async (req, res) => {
     } catch (error) {
         console.error(error);
         
+    }
+};
+
+const loadupdateProduct = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const product = await ProductModel.findById(productId);
+
+        if (!product) {
+            return res.status(404).send("Product not found");
+        }
+
+        res.render("admin/updateproduct", { product });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const updateProduct = async (req, res) => {
+    try {
+        const { name, price, description ,stock,category} = req.body;
+        const productId = req.params.id;
+        const updatedProduct = await ProductModel.findByIdAndUpdate(
+            productId,
+            { name, price, description,stock,category},
+            { new: true }
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        res.json({ success: true, message: "Product updated successfully", product: updatedProduct });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const Productlisting = async (req, res) => {
+    try { 
+        const { productId, isListed } = req.body;
+        if (typeof isListed !== "boolean") {
+            return res.status(400).json({ success: false, message: "Invalid isListed value" });
+        }
+        const product = await ProductModel.findById(productId);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+        product.isListed =isListed;
+        await product.save();
+
+        res.json({ success: true, isListed: product.isListed });
+    } catch (error) {
+        console.error(error);
     }
 };
 
@@ -201,24 +255,14 @@ const Categorylisting = async (req, res) => {
     }
 };
 
-const Productlisting = async (req, res) => {
-    try { 
-        const { productId, isListed } = req.body;
-        if (typeof isListed !== "boolean") {
-            return res.status(400).json({ success: false, message: "Invalid isListed value" });
-        }
-        const product = await ProductModel.findById(productId);
-        if (!product) {
-            return res.status(404).json({ success: false, message: "Product not found" });
-        }
-        product.isListed =isListed;
-        await product.save();
-
-        res.json({ success: true, isListed: product.isListed });
+const logout=async(req,res)=>{
+    try {
+        req.session.admin = null; 
+        res.redirect('/admin/login');
     } catch (error) {
         console.error(error);
     }
-};
+}
 
 
 
@@ -226,9 +270,9 @@ const Productlisting = async (req, res) => {
 
 
 
-module.exports = {loadlogin,
-    login,loaddashboard,loaduser,banUser,
-    loadProducts,loadaddproduct,addProduct,
-    loadcategory,loadaddcategory,addcategory,
-    loadUpdateCategory,updateCategory,Categorylisting,
-    Productlisting}
+module.exports = {loadlogin,login,loaddashboard,
+loaduser,banUser,loadProducts,loadaddproduct,
+addProduct,loadcategory,loadaddcategory,
+addcategory,loadUpdateCategory,updateCategory,
+Categorylisting,Productlisting,loadupdateProduct,
+updateProduct,logout}
