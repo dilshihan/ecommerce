@@ -109,6 +109,8 @@ const addProduct = async (req, res) => {
 };
 
 const loadupdateProduct = async (req, res) => {
+  
+    
     try {
         const productId = req.params.id;
         const product = await ProductModel.findById(productId);
@@ -116,6 +118,7 @@ const loadupdateProduct = async (req, res) => {
         if (!product) {
             return res.status(404).send("Product not found");
         }
+console.log(product);
 
         res.render("admin/updateproduct", { product });
     } catch (error) {
@@ -124,6 +127,9 @@ const loadupdateProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
+console.log(req.body);
+
+    
     try {
         const { name, price, description ,stock,category} = req.body;
         const productId = req.params.id;
@@ -137,7 +143,7 @@ const updateProduct = async (req, res) => {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
 
-        res.json({ success: true, message: "Product updated successfully", product: updatedProduct });
+        res.redirect('/admin/products')
     } catch (error) {
         console.error(error);
     }

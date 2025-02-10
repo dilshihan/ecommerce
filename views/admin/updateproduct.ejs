@@ -57,19 +57,19 @@
             <% for(let i = 1; i <= 3; i++) { %>
             <div class="form-group">
                 <label>Product Image <%= i %></label>
-                <% if(product.images && product.images[i-1]) { %>
+                <% if(product.image && product.image[i-1]) { %>
                     <div class="current-image">
-                        <img src="<%= product.images[i-1] %>" alt="Current Image <%= i %>" style="max-width: 100px;">
-                        <button type="button" class="remove-image-btn" data-image-num="<%= i %>">Remove Image</button>
+                        <img src="/uploads/<%= product.image[i-1] %>" alt="Current Image <%= i %>" style="max-width: 100px;">
+ 
                     </div>
                 <% } %>
-                <input type="file" id="productImage<%= i %>" name="image" accept="image/*">
+                <input type="file" id="productImage<%= i %>" name="image<%= i %>" accept="image/*">
                 <div class="image-container" style="max-width: 100px; margin-top: 20px;">
                     <img id="previewImage<%= i %>" src="" style="max-width: 100%; display: none;">
                 </div>
                 <button type="button" id="cropButton<%= i %>" class="crop-btn" style="display: none;">Crop Image</button>
                 <input type="hidden" name="croppedImage<%= i %>" id="croppedImage<%= i %>">
-                <input type="hidden" name="existingImage<%= i %>" value="<%= product.images && product.images[i-1] ? product.images[i-1] : '' %>">
+                <input type="hidden" name="existingImage<%= i %>" value="<%= product.image && product.image[i-1] ? product.image[i-1] : '' %>">
             </div>
             <% } %>
 
@@ -269,12 +269,12 @@
         const imageInput = document.getElementById(`productImage${number}`);
         const previewImage = document.getElementById(`previewImage${number}`);
         const cropButton = document.getElementById(`cropButton${number}`);
-        const currentImageDiv = document.querySelector(`.current-image img[alt="Current Image ${number}"]`);
+        const currentImageDiv = imageInput.closest('.form-group').querySelector('.current-image img');
 
         // If there's an existing image, show it in preview
         if (currentImageDiv) {
             previewImage.src = currentImageDiv.src;
-            previewImage.style.display = 'block';
+            previewImage.style.display = 'none'; // Keep it hidden initially
         }
 
         imageInput.addEventListener('change', function (e) {
@@ -444,7 +444,40 @@
             });
 
             try {
-                form.submit();
+                const formData = new FormData(form);
+                
+                // Add cropped image data to FormData if they exist
+                for (let i = 1; i <= 3; i++) {
+                    const croppedImage = document.getElementById(`croppedImage${i}`).value;
+                    if (croppedImage) {
+                        formData.append(`croppedImage${i}`, croppedImage);
+                    }
+                }
+
+                // Convert FormData to object
+                const formDataObj = {};
+                formData.forEach((value, key) => {
+                    formDataObj[key] = value;
+                });
+
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formDataObj)
+                });
+
+                if (response.ok) {
+                    await Swal.fire({
+                        title: 'Success!',
+                        text: 'Product updated successfully',
+                        icon: 'success'
+                    });
+                    window.location.href = '/admin/products';
+                } else {
+                    throw new Error('Update failed');
+                }
             } catch (error) {
                 await Swal.fire({
                     title: 'Error!',

@@ -21,7 +21,6 @@ const transporter = nodemailer.createTransport({
 // Function to generate OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 
-
 const registerUser = async (req, res) => {
     try {
         const {email, password } = req.body;
@@ -49,22 +48,26 @@ const registerUser = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
     try {
-        const {otp, email } = req.body;
-        const storedOTP = req.session.otp
+        const { otp, email } = req.body;
+        const storedOTP = req.session.otp;
+
         if (!storedOTP || storedOTP !== parseInt(otp)) {
-            
             return res.render('user/verify', { email, message: 'Invalid OTP' });
-           
         } 
+
         const hashedPassword = await bcrypt.hash(req.session.password, saltround);
-        const newUser = new userschema({email:req.session.email,password: hashedPassword });
+        const newUser = new userschema({ email: req.session.email, password: hashedPassword });
         await newUser.save();
 
         req.session.otp = null; // Remove OTP after verification
 
-        res.render('user/home', { message: 'Account created successfully' });
+        
+        const products = await Productmodel.find({});
+        
 
-    }catch(error) {
+        res.render('user/home', { products, message: 'Account created successfully' });
+
+    } catch (error) {
         console.log(error);
         res.render('user/verify', { message: 'Something went wrong' });
     }
@@ -117,8 +120,7 @@ const Loadhome = async (req, res) => {
         const products = await Productmodel.find({}); // Fetch all products
         res.render("user/home", { products }); // Pass products to EJS
     } catch (error) {
-        console.error("Error fetching products:", error);
-        res.status(500).send("Internal Server Error");
+        console.error(error);
     }
 };
 
