@@ -35,16 +35,28 @@ const loaddashboard= async(req,res)=>{
    
 }
 
-const loaduser= async(req,res)=>{
-    try{
-        const admin = req.session.admin
-        if(!admin){return res.redirect('/admin/login')}
-        const user = await usermodel.find({})
-        res.render('admin/users',{user})
-    }catch(error){
-        console.log(error)
-    }   
-}
+const loaduser = async (req, res) => {
+    try {
+        const admin = req.session.admin;
+        if (!admin) return res.redirect('/admin/login');
+
+        let page = parseInt(req.query.page) || 1; // Get current page (default: 1)
+        let limit = 5; // Number of users per page
+        let skip = (page - 1) * limit; // Calculate how many to skip
+
+        const totalUsers = await usermodel.countDocuments(); // Count total users
+        const users = await usermodel.find({}).skip(skip).limit(limit); // Get paginated users
+
+        res.render('admin/users', {
+            users, 
+            currentPage: page,
+            totalPages: Math.ceil(totalUsers / limit) // Calculate total pages
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const banUser = async (req, res) => {
     try {
@@ -55,24 +67,34 @@ const banUser = async (req, res) => {
         }
         user.status = user.status === "Active" ? "Banned" : "Active";
         await user.save();
-        res.json({ success: true, status: user.status });
+        res.json({ success: true, status: user.status});
     } catch (error) {
         console.error(error);
     }   
 };
 
 const loadProducts = async (req, res) => {
-        try {
-            const admin = req.session.admin;
-            if (!admin) {
-                return res.redirect('/admin/login');
-            }
-            const products = await ProductModel.find({});
-            res.render('admin/products', { products });
-        } catch (error) {
-            console.log(error);
-            res.send('Something went wrong');
+    try {
+        const admin = req.session.admin;
+        if (!admin) {
+            return res.redirect('/admin/login');
         }
+        const page = parseInt(req.query.page) || 1;
+        const limit = 5;
+        const totalProducts = await ProductModel.countDocuments();
+        const totalPages = Math.ceil(totalProducts / limit);
+        const products = await ProductModel.find({})
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+        res.render('admin/products', { 
+            products, 
+            currentPage: page, 
+            totalPages 
+        });
+    } catch (error) {
+        console.error(error);
+    }
 };
 
 const loadaddproduct =async (req,res)=>{
@@ -118,7 +140,6 @@ const loadupdateProduct = async (req, res) => {
         if (!product) {
             return res.status(404).send("Product not found");
         }
-console.log(product);
 
         res.render("admin/updateproduct", { product });
     } catch (error) {
@@ -127,8 +148,6 @@ console.log(product);
 };
 
 const updateProduct = async (req, res) => {
-console.log(req.body);
-
     
     try {
         const { name, price, description ,stock,category} = req.body;
@@ -170,10 +189,22 @@ const Productlisting = async (req, res) => {
 
 const loadcategory = async (req, res) => {
     try {
-        const categories = await Categorymodel.find(); 
-        res.render("admin/category",{categories});
+        let page = parseInt(req.query.page) || 1; 
+        let limit = 5; 
+        let skip = (page - 1) * limit; 
+
+        const categories = await Categorymodel.find().skip(skip).limit(limit); 
+        const totalCategories = await Categorymodel.countDocuments(); 
+        const totalPages = Math.ceil(totalCategories / limit);
+
+        res.render("admin/category", { 
+            categories, 
+            currentPage: page, 
+            totalPages 
+        });
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 };
 
@@ -253,6 +284,10 @@ const Categorylisting = async (req, res) => {
         
         category.isListed = isListed;
         await category.save();
+        await ProductModel.updateMany(
+            { category: categoryId }, // Find products with the same category
+            { $set: { isListed: isListed } } // Set their isListed status to match the category
+        );
 
         res.json({ success: true, isListed: category.isListed });
     } catch (error) {

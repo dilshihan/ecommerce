@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/style/adminlogin.css">
 </head>
+
 <body>
     <div class="page-container">
         <div class="login-container">
@@ -15,36 +17,26 @@
                 <div class="logo-section">
                     <h1 class="logo-title">SNACK STORM</h1>
                     <span class="admin-badge">Admin Portal</span>
-                  
-               <p><%= message  %></p>
-                    
+
+                    <p>
+                        <%= message %>
+                    </p>
+
                 </div>
-                
+
                 <form action="/admin/login" method="post">
                     <div class="input-group">
                         <label for="email-field" class="input-label">Email Address</label>
-                        <input 
-                            name="email" 
-                            id="email-field" 
-                            type="email" 
-                            class="input-field" 
-                            placeholder="Enter your admin email"
-                            required
-                        >
+                        <input name="email" id="email-field" type="email" class="input-field"
+                            placeholder="Enter your admin email" required>
                     </div>
-                    
+
                     <div class="input-group">
                         <label for="password-field" class="input-label">Password</label>
-                        <input 
-                            name="password" 
-                            id="password-field" 
-                            type="password" 
-                            class="input-field" 
-                            placeholder="Enter your password"
-                            required
-                        >
+                        <input name="password" id="password-field" type="password" class="input-field"
+                            placeholder="Enter your password" required>
                     </div>
-                    
+
                     <p id="errp" class="error-text"></p>
 
                     <button type="submit" id="bb" class="submit-btn">
@@ -74,4 +66,5 @@
         }
     </script>
 </body>
+
 </html>

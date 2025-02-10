@@ -98,5 +98,16 @@
             swal.fire(message);
         }
     </script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("blocked")) {
+            Swal.fire({
+                icon: "error",
+                title: "Access Denied",
+                text: "User email blocked, please try another email",
+                confirmButtonColor: "#d33"
+            });
+        }
+    </script>
 </body>
 </html>

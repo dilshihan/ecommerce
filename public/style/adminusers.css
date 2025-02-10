@@ -232,3 +232,58 @@ tr:last-child td {
         width: 100%;
     }
 }
+/* Container for pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Pagination links */
+.pagination a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    background-color: #f8f9fa;
+    color: #2563eb;
+    text-decoration: none;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover state */
+.pagination a:hover {
+    background-color: #2563eb;
+    color: white;
+    border-color: #2563eb;
+}
+
+/* Active/current page */
+.pagination a:active {
+    transform: scale(0.98);
+}
+
+/* Page information text */
+.pagination {
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+/* Disabled state for when on first/last page */
+.pagination a[href="#"],
+.pagination a:not([href]) {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+/* Optional: Add a subtle shadow on hover */
+.pagination a:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -177,7 +177,7 @@
             </ul>
         </nav>
     </aside>
-     <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('addProductForm');
             const croppers = {};
@@ -298,9 +298,10 @@
 
                             croppers[`cropper${number}`] = new Cropper(previewImage, {
                                 aspectRatio: NaN,
-                                viewMode: 0,
+                                viewMode: 2, // Ensures cropped area is correctly maintained
                                 autoCrop: true
                             });
+
                         };
                         reader.readAsDataURL(file);
                     }
@@ -309,23 +310,42 @@
                 cropButton.addEventListener('click', function () {
                     if (croppers[`cropper${number}`]) {
                         const canvas = croppers[`cropper${number}`].getCroppedCanvas();
-                        const croppedDataUrl = canvas.toDataURL();
 
-                        document.getElementById(`croppedImage${number}`).value = croppedDataUrl;
-                        previewImage.src = croppedDataUrl;
-                        croppers[`cropper${number}`].destroy();
-                        croppers[`cropper${number}`] = null;
-                        cropButton.style.display = 'none';
+                        if (canvas) {
+                            const croppedDataUrl = canvas.toDataURL("image/png"); // Ensure it's PNG or JPG
 
-                        Swal.fire({
-                            title: 'Success!',
-                            text: `Image ${number} has been cropped successfully!`,
-                            icon: 'success',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
+                            // Store the cropped image in the hidden input field
+                            document.getElementById(`croppedImage${number}`).value = croppedDataUrl;
+
+                            // Update the preview to show the cropped image
+                            previewImage.src = croppedDataUrl;
+
+                            // Destroy the cropper instance
+                            croppers[`cropper${number}`].destroy();
+                            croppers[`cropper${number}`] = null;
+
+                            // Hide crop button
+                            cropButton.style.display = 'none';
+
+                            Swal.fire({
+                                title: 'Success!',
+                                text: `Image ${number} has been cropped successfully!`,
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: "Couldn't crop the image. Try again!",
+                                icon: 'error',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
                     }
                 });
+
             }
 
             // Setup croppers for all three images
@@ -360,7 +380,7 @@
                             });
                             isValid = false;
                         }
-                        if (imageInput.files[0].size > 100* 1024 * 1024) {
+                        if (imageInput.files[0].size > 100 * 1024 * 1024) {
                             await Swal.fire({
                                 title: 'File Too Large',
                                 text: `Image ${i} exceeds maximum size of 5MB.`,
@@ -443,4 +463,5 @@
         });
     </script>
 </body>
+
 </html>

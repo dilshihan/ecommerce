@@ -96,20 +96,31 @@ const resendOTP = async (req, res) => {
     }
 };
 
-const  loginUser = async(req,res)=>{
-    try{
-        const {name,email,password}=req.body
-        const user  = await userschema.findOne({email})
-        if(!user) return res.render('user/register',{message:'user does not exist'})
-            const isMatch = await bcrypt.compare(password,user.password)
-        if(!isMatch) return res.render('user/register',{message:'invalid password'})
-            req.session.user=true;
-        req.session.email=email
-        res.redirect('/user/home')
-    }catch(error){
-       res.render('user/register',{message:'somthing went wrong'})
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await userschema.findOne({ email });
+
+        if (!user) {
+            return res.render("user/register", { message: "User does not exist" });
+        }
+
+        if (user.status === "Banned") { 
+            return res.render("user/register", { message: "User email blocked, please try another email" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.render("user/register", { message: "Invalid password" });
+        }
+
+        req.session.user = user._id; //Store ObjectId
+        req.session.email = user.email;
+        res.redirect("/user/home");
+    } catch (error) {
+        console.error(error);
     }
-}
+};
 
 const loadregister = async (req,res)=>{
     res.render('user/register',{message:''})
@@ -124,11 +135,6 @@ const Loadhome = async (req, res) => {
     }
 };
 
-const logout = (req,res)=>{
-    req.session.user=null;
-    res.redirect('/user/register')
-}
-
 const loadmenu= async (req, res) => {
         try {
             const products = await Productmodel.find({});
@@ -137,6 +143,7 @@ const loadmenu= async (req, res) => {
             console.error(error)
         }
     }
+
 const Productdetails = async (req, res) => {
         try { 
             const products = await Productmodel.findById(req.params.id);
@@ -148,6 +155,11 @@ const Productdetails = async (req, res) => {
         } catch (error) {
             console.error(error);
         }
+    }
+
+const logout = (req,res)=>{
+        req.session.user=null;
+        res.redirect('/user/register')
     }
 
 module.exports={registerUser,loadregister,loginUser,

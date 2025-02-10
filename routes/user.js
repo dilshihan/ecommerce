@@ -9,9 +9,9 @@ router.post('/register',usercontroller.registerUser)
 router.post('/verify',usercontroller.verifyOTP)
 router.get('/resendotp',usercontroller.resendOTP)
 router.post('/login',usercontroller.loginUser)
-router.get('/home',userauth.checksession,usercontroller.Loadhome)
-router.get('/menu',usercontroller.loadmenu) 
-router.get('/productdetails/:id',usercontroller.Productdetails)
+router.get('/home',userauth.checksession,userauth.checkBan,usercontroller.Loadhome)
+router.get('/menu',userauth.checkBan,usercontroller.loadmenu) 
+router.get('/productdetails/:id',userauth.checkBan,usercontroller.Productdetails)
 router.post('/logout',userauth.checksession,usercontroller.logout)
 
 
