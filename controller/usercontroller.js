@@ -3,6 +3,7 @@ const Productmodel = require('../model/prodectmodel')
 const bcrypt = require('bcrypt')
 const saltround = 10
 const nodemailer = require('nodemailer')
+const Category = require('../model/categorymodel')
 
 
 
@@ -129,7 +130,13 @@ const loadregister = async (req,res)=>{
 const Loadhome = async (req, res) => {
     try {
         const products = await Productmodel.find({}); // Fetch all products
-        res.render("user/home", { products }); // Pass products to EJS
+        const catogorys = await Category.find({}); 
+        console.log('sudkgbaskjdbasdkjas');
+        
+        console.log(products);
+        console.log('sudkgbaskjdbasdkjas');
+        
+        res.render("user/home", { products ,catogorys}); // Pass products to EJS
     } catch (error) {
         console.error(error);
     }

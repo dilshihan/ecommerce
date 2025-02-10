@@ -267,7 +267,6 @@ const updateCategory = async (req, res) => {
         console.error(error);
     }
 };
-
 const Categorylisting = async (req, res) => {
     try {
         const { categoryId, isListed } = req.body; 
@@ -281,18 +280,24 @@ const Categorylisting = async (req, res) => {
             return res.status(404).json({ success: false, message: "Category not found" });
         }
 
-        
+        // Update category listing status
         category.isListed = isListed;
         await category.save();
+
+        // Update all products with this category name to match the category's listing status
         await ProductModel.updateMany(
-            { category: categoryId }, // Find products with the same category
-            { $set: { isListed: isListed } } // Set their isListed status to match the category
+            { category: category.name },
+            { $set: { isListed: isListed } }
         );
 
-        res.json({ success: true, isListed: category.isListed });
+        res.json({ 
+            success: true, 
+            message: `Category and associated products ${isListed ? 'listed' : 'unlisted'} successfully`,
+            isListed: category.isListed 
+        });
     } catch (error) {
         console.error(error);
-        
+        res.status(500).json({ success: false, message: "Error updating listing status" });
     }
 };
 

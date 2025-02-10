@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema({
     description: { type: String, trim: true },
     image: { type: [String],required: true }, 
     category: { 
-        type: mongoose.Schema.Types.ObjectId,  // Link to Category by ID
+        type: String,  // Link to Category by ID
         ref: 'Category',  
         required: true
     },
