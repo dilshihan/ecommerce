@@ -22,6 +22,7 @@ const transporter = nodemailer.createTransport({
 // Function to generate OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000);
 
+
 const registerUser = async (req, res) => {
     try {
         const {email, password } = req.body;
@@ -64,9 +65,9 @@ const verifyOTP = async (req, res) => {
 
         
         const products = await Productmodel.find({});
-        
+        const catogorys=await Category.find({})
 
-        res.render('user/home', { products, message: 'Account created successfully' });
+        res.render('user/home', { products, message: 'Account created successfully' ,catogorys});
 
     } catch (error) {
         console.log(error);
@@ -131,11 +132,6 @@ const Loadhome = async (req, res) => {
     try {
         const products = await Productmodel.find({}); // Fetch all products
         const catogorys = await Category.find({}); 
-        console.log('sudkgbaskjdbasdkjas');
-        
-        console.log(products);
-        console.log('sudkgbaskjdbasdkjas');
-        
         res.render("user/home", { products ,catogorys}); // Pass products to EJS
     } catch (error) {
         console.error(error);
@@ -169,6 +165,87 @@ const logout = (req,res)=>{
         res.redirect('/user/register')
     }
 
+const handleGoogleLogin = async (req, res) => {
+    try {
+        const { token, userData } = req.body;
+        
+        // Check if user already exists
+        let user = await userschema.findOne({ email: userData.email });
+        
+        if (!user) {
+            // Create new user if doesn't exist
+            user = new userschema({
+                email: userData.email,
+                // Store a random password since Google auth doesn't provide one
+                password: await bcrypt.hash(Math.random().toString(36).slice(-8), saltround),
+                status: 'Active'
+            });
+            await user.save();
+        } else if (user.status === "Banned") {
+            return res.json({
+                success: false,
+                message: "This account has been banned"
+            });
+        }
+
+        // Set session
+        req.session.user = user._id;
+        req.session.email = user.email;
+
+        res.json({
+            success: true,
+            message: "Successfully authenticated with Google"
+        });
+
+    } catch (error) {
+        console.error("Google authentication error:", error);
+        res.json({
+            success: false,
+            message: "Authentication failed"
+        });
+    }
+};
+
+const handleGoogleCallback = async (req, res) => {
+    try {
+        // Send a script that posts the token back to the opener window
+        res.send(`
+            <script>
+                if (window.opener) {
+                    const params = new URLSearchParams(window.location.hash.substring(1));
+                    const accessToken = params.get('access_token');
+                    
+                    // Get user info from Google
+                    fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        window.opener.postMessage({
+                            type: 'google-auth',
+                            userData: {
+                                email: data.email,
+                                name: data.name,
+                                picture: data.picture
+                            }
+                        }, window.location.origin);
+                        window.close();
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user info:', error);
+                        window.close();
+                    });
+                }
+            </script>
+        `);
+    } catch (error) {
+        console.error('Google callback error:', error);
+        res.status(500).send('Authentication failed');
+    }
+};
+
 module.exports={registerUser,loadregister,loginUser,
                verifyOTP,resendOTP,logout,Loadhome,
-               loadmenu,Productdetails}
+               loadmenu,Productdetails,handleGoogleLogin,handleGoogleCallback}

@@ -267,6 +267,7 @@ const updateCategory = async (req, res) => {
         console.error(error);
     }
 };
+
 const Categorylisting = async (req, res) => {
     try {
         const { categoryId, isListed } = req.body; 

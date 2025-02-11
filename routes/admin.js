@@ -8,19 +8,19 @@ router.get('/login',adminauth.islogin,admincontreller.loadlogin)
 router.post('/login',admincontreller.login)
 router.get('/dashboard',adminauth.checksession,admincontreller.loaddashboard)
 router.get('/users',adminauth.checksession,admincontreller.loaduser)
-router.post('/ban-user',admincontreller.banUser)
-router.get('/products',admincontreller.loadProducts);
-router.get('/addproduct',adminauth.checksession,admincontreller.loadaddproduct)
-router.post('/addproduct', upload, admincontreller.addProduct);
-router.post('/products',admincontreller.Productlisting)
-router.get("/updateproduct/:id", admincontreller.loadupdateProduct)
-router.post('/updateproduct/:id',admincontreller.updateProduct)
-router.get('/category',admincontreller.loadcategory)
-router.get('/addcategory',admincontreller.loadaddcategory)
-router.post('/addcategory',admincontreller.addcategory)
-router.get('/categories/update/:id', admincontreller.loadUpdateCategory);
-router.post('/categories/update/:id', admincontreller.updateCategory)
-router.post('/categories/listing', admincontreller.Categorylisting);
+router.post('/ban-user',adminauth.checksession,admincontreller.banUser)
+router.get('/products',adminauth.checksession,admincontreller.loadProducts);
+router.get('/addproduct',adminauth.checksession,adminauth.checksession,admincontreller.loadaddproduct)
+router.post('/addproduct', upload,adminauth.checksession, admincontreller.addProduct);
+router.post('/products',adminauth.checksession,admincontreller.Productlisting)
+router.get("/updateproduct/:id",adminauth.checksession, admincontreller.loadupdateProduct)
+router.post('/updateproduct/:id',adminauth.checksession,admincontreller.updateProduct)
+router.get('/category',adminauth.checksession,admincontreller.loadcategory)
+router.get('/addcategory',adminauth.checksession,admincontreller.loadaddcategory)
+router.post('/addcategory',adminauth.checksession,admincontreller.addcategory)
+router.get('/categories/update/:id',adminauth.checksession, admincontreller.loadUpdateCategory);
+router.post('/categories/update/:id', adminauth.checksession,admincontreller.updateCategory)
+router.post('/categories/listing',adminauth.checksession, admincontreller.Categorylisting);
 router.get('/logout',adminauth.checksession,admincontreller.logout)
 
 
