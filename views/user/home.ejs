@@ -399,7 +399,8 @@
                 <div class="box">
                   <div>
                     <div class="img-box">
-                      <img src="/uploads/<%= product.image[0] %>" alt="<%= product.name %>">
+                      <a href="/user/productdetails/<%= product._id %>" class="text-decoration-none">
+                        <img src="/uploads/<%= product.image[0] %>" alt="<%= product.name %>">
                     </div>
                     <div class="detail-box">
                       <h5>

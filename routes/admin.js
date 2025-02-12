@@ -14,7 +14,7 @@ router.get('/addproduct',adminauth.checksession,adminauth.checksession,admincont
 router.post('/addproduct', upload,adminauth.checksession, admincontreller.addProduct);
 router.post('/products',adminauth.checksession,admincontreller.Productlisting)
 router.get("/updateproduct/:id",adminauth.checksession, admincontreller.loadupdateProduct)
-router.post('/updateproduct/:id',adminauth.checksession,admincontreller.updateProduct)
+router.post('/updateproduct/:id',upload,adminauth.checksession,admincontreller.updateProduct)
 router.get('/category',adminauth.checksession,admincontreller.loadcategory)
 router.get('/addcategory',adminauth.checksession,admincontreller.loadaddcategory)
 router.post('/addcategory',adminauth.checksession,admincontreller.addcategory)

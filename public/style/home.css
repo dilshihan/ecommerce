@@ -28,3 +28,57 @@
     background: rgba(0, 0, 0, 0.4); /* Adjust opacity as needed */
     z-index: -1;
 }
+.pagination-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .page-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4a90e2;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .page-btn:hover {
+    background-color: #357abd;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .page-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  #pageNumbers {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    min-width: 100px;
+    text-align: center;
+  }
+  /* Product link styling */
+.text-decoration-none {
+  color: inherit !important;
+}
+
+.text-decoration-none:hover {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+.text-decoration-none h5 {
+  color: #ffffff !important;  
+}
+.text-decoration-none .price {
+  color: #ffbe33 !important;  
+}

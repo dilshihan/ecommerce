@@ -105,9 +105,11 @@ const addProduct = async (req, res) => {
     try {
         
         const { name, price, stock, description, category } = req.body;
+
+         // Extract filenames for multiple images
+         let images = []
+         images = req.files ? req.files.map(file => file.filename) : [];
         
-        // Extract filenames for multiple images
-        const images = req.files ? req.files.map(file => file.filename) : [];
 
         if (!name || !price || !category || !description||!stock) {
             return res.status(400).send("all field are required");
@@ -152,11 +154,18 @@ const updateProduct = async (req, res) => {
     try {
         const { name, price, description ,stock,category} = req.body;
         const productId = req.params.id;
+        
+        
+        
         const updatedProduct = await ProductModel.findByIdAndUpdate(
             productId,
             { name, price, description,stock,category},
             { new: true }
         );
+        // Check if a new image was uploaded
+        if (req.file) {
+            updateFields.image = req.file.filename; // Assuming you're storing filename
+        }
 
         if (!updatedProduct) {
             return res.status(404).json({ success: false, message: "Product not found" });

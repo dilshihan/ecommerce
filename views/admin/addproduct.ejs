@@ -226,7 +226,7 @@
                 },
                 productPrice: {
                     required: true,
-                    min: 0,
+                    min: 1,
                     max: 100000,
                     pattern: /^\d+(\.\d{1,2})?$/,
                     errorMessages: {
@@ -292,6 +292,10 @@
                             previewImage.style.display = 'block';
                             cropButton.style.display = 'block';
 
+
+                            console.log("aaaaaaaaa", previewImage.src);
+
+
                             if (croppers[`cropper${number}`]) {
                                 croppers[`cropper${number}`].destroy();
                             }
@@ -312,7 +316,9 @@
                         const canvas = croppers[`cropper${number}`].getCroppedCanvas();
 
                         if (canvas) {
-                            const croppedDataUrl = canvas.toDataURL("image/png"); // Ensure it's PNG or JPG
+                            const croppedDataUrl = canvas.toDataURL("image/png");
+
+                            // Ensure it's PNG or JPG
 
                             // Store the cropped image in the hidden input field
                             document.getElementById(`croppedImage${number}`).value = croppedDataUrl;
@@ -413,6 +419,20 @@
             }
 
             // Form submission handler
+            // Add this function to convert Data URI to Blob
+            function dataURItoBlob(dataURI) {
+                const split = dataURI.split(',');
+                const byteString = atob(split[1]);
+                const mimeString = split[0].split(':')[1].split(';')[0];
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([ab], { type: mimeString });
+            }
+
+            // Modify the form submission handler
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
 
@@ -439,16 +459,53 @@
                     });
 
                     try {
-                        form.submit();
+                        const formData = new FormData();
+
+                        // Append text fields
+                        formData.append('name', document.getElementById('productName').value);
+                        formData.append('description', document.getElementById('productDescription').value);
+                        formData.append('category', document.getElementById('productCategory').value);
+                        formData.append('stock', document.getElementById('productStock').value);
+                        formData.append('price', document.getElementById('productPrice').value);
+
+                        // Append cropped images
+                        for (let i = 1; i <= 3; i++) {
+                            const croppedImage = document.getElementById(`croppedImage${i}`).value;
+                            if (croppedImage) {
+                                const blob = dataURItoBlob(croppedImage);
+                                formData.append('image', blob, `image${i}.png`);
+                            }
+                        }
+
+                        // Send the request
+                        const response = await fetch('/admin/addproduct', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Product added successfully!',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '/admin/products'; // Redirect after success
+                            });
+                        } else {
+                            const error = await response.json();
+                            throw new Error(error.message || 'Failed to add product');
+                        }
                     } catch (error) {
-                        await Swal.fire({
+                        Swal.fire({
                             title: 'Error!',
-                            text: 'There was a problem adding the product. Please try again.',
+                            text: error.message || 'There was a problem adding the product. Please try again.',
                             icon: 'error'
                         });
                     }
                 } else {
-                    await Swal.fire({
+                    Swal.fire({
                         title: 'Validation Error',
                         text: 'Please check the form for errors and try again.',
                         icon: 'error'
@@ -460,7 +517,7 @@
                     }
                 }
             });
-        });
+        })
     </script>
 </body>
 
