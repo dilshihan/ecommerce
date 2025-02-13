@@ -1,15 +1,201 @@
-/* Product link styling */
-.text-decoration-none {
-    color: inherit !important;
+
+.filters-content {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .product-image {
+    position: relative;
+    padding-top: 75%; /* 4:3 aspect ratio */
+    overflow: hidden;
+  }
+  
+  .product-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .product-image:hover img {
+    transform: scale(1.05);
+  }
+  
+  .product-info {
+    padding: 1.25rem;
+  }
+  
+  .product-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: #333;
+  }
+  
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+  }
+  
+  .price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+  
+  .cart-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ff4757;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .cart-button:hover {
+    background: #ff6b81;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.2);
+  }
+  
+  .cart-button svg {
+    width: 20px;
+    height: 20px;
+  }
+  .cart-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+  
+  .view-more {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .view-more-button {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background: #2c3e50;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .view-more-button:hover {
+    background: #34495e;
+  }
+  
+  @media (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .filters-content {
+      padding: 1rem;
+    }
+    .cart-button span {
+        display: none; 
+      }
+      .cart-button {
+        padding: 8px;
+      }
+  }
+  /* Filter Menu Container */
+.filters_menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    margin: 0;
+    list-style: none;
 }
 
-.text-decoration-none:hover {
-    color: inherit !important;
-    text-decoration: none !important;
+/* Filter Menu Items */
+.filters_menu li {
+    font-size: 1.1rem;
+    font-weight: 500;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    background: transparent;
 }
-.text-decoration-none h5 {
-    color: #ffffff !important;  
+
+/* Active State */
+.filters_menu li.active {
+    color: #ffffff;
+    background: #ff4b2b;
+    box-shadow: 0 4px 15px rgba(255, 75, 43, 0.2);
 }
-.text-decoration-none .price {
-    color: #ffbe33 !important;  
+
+/* Hover Effects */
+.filters_menu li:not(.active):hover {
+    color: #ff4b2b;
+    transform: translateY(-2px);
 }
+
+/* Hover Underline Animation */
+.filters_menu li:not(.active)::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background: #ff4b2b;
+    transition: all 0.3s ease;
+}
+
+.filters_menu li:not(.active):hover::after {
+    width: 80%;
+    left: 10%;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .filters_menu {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .filters_menu li {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+
+.product-grid {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.product-card {
+    width: calc(32% - 20px); /* Adjust based on your layout needs */
+    margin: 10px;
+}
+  

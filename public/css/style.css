@@ -477,7 +477,7 @@ a:focus {
           transform: scale(1.1);
 }
 
-.food_section .filters_menu {
+/* .food_section .filters_menu {
   padding: 0;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -500,9 +500,9 @@ a:focus {
 .food_section .filters_menu li.active {
   background-color: #222831;
   color: #ffffff;
-}
+} */
 
-.food_section .box {
+/* .food_section .box {
   position: relative;
   margin-top: 25px;
   background-color: #ffffff;
@@ -612,7 +612,7 @@ a:focus {
 
 .food_section .btn-box a:hover {
   background-color: #e69c00;
-}
+} */
 
 .about_section {
   background: #222831;
