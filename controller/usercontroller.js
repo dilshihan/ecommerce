@@ -138,14 +138,37 @@ const Loadhome = async (req, res) => {
     }
 };
 
-const loadmenu= async (req, res) => {
-        try {
-            const products = await Productmodel.find({});
-            res.render("user/menu", { products });
-        } catch (error) {
-            console.error(error)
-        }
+const loadmenu = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = 9; // Products per page
+        
+        const totalProducts = await Productmodel.countDocuments({});
+        const totalPages = Math.ceil(totalProducts / limit);
+        
+        const products = await Productmodel.find({})
+            .skip((page - 1) * limit)
+            .limit(limit);
+
+            if (req.xhr) { // If AJAX request
+                // Return JSON data instead of rendering full page
+                return res.json({
+                    success: true,
+                    products,
+                    currentPage: page,
+                    totalPages
+                });
+            } else {
+                return res.render("user/menu", { 
+                    products,
+                    currentPage: page,
+                    totalPages
+                });
+            }
+    } catch (error) {
+        console.error(error);
     }
+}   
 
 const Productdetails = async (req, res) => {
         try { 
@@ -153,8 +176,12 @@ const Productdetails = async (req, res) => {
             if (!products) {
                 return res.redirect('/user/menu');
             }
+            const relatedProducts = await Productmodel.find({
+                category: products.category,
+                _id: { $ne: req.params.id } // Exclude current product
+            }).limit(4);
             
-            res.render('user/productdetails', { products });
+            res.render('user/productdetails', { products,relatedProducts});
         } catch (error) {
             console.error(error);
         }
