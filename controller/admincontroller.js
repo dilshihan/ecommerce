@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const usermodel = require('../model/usermodel')
 const ProductModel = require('../model/prodectmodel')
 const  Categorymodel = require('../model/categorymodel')
+const fs = require('fs');
+const path = require('path');
 
 
 
@@ -40,17 +42,17 @@ const loaduser = async (req, res) => {
         const admin = req.session.admin;
         if (!admin) return res.redirect('/admin/login');
 
-        let page = parseInt(req.query.page) || 1; // Get current page (default: 1)
-        let limit = 5; // Number of users per page
-        let skip = (page - 1) * limit; // Calculate how many to skip
+        let page = parseInt(req.query.page) || 1; 
+        let limit = 5; 
+        let skip = (page - 1) * limit; 
 
-        const totalUsers = await usermodel.countDocuments(); // Count total users
-        const users = await usermodel.find({}).skip(skip).limit(limit); // Get paginated users
+        const totalUsers = await usermodel.countDocuments(); 
+        const users = await usermodel.find({}).skip(skip).limit(limit); 
 
         res.render('admin/users', {
             users, 
             currentPage: page,
-            totalPages: Math.ceil(totalUsers / limit) // Calculate total pages
+            totalPages: Math.ceil(totalUsers / limit) 
         });
 
     } catch (error) {
@@ -150,28 +152,54 @@ const loadupdateProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-    
     try {
-        const { name, price, description ,stock,category} = req.body;
+        const { name, price, description, stock, category} = req.body;
         const productId = req.params.id;
-        
-        
-        
+
+        const existingProduct = await ProductModel.findById(productId);
+        if (!existingProduct) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        let updatedImages = existingProduct.image || []; 
+
+        // Function to convert base64 to an image file
+        const saveBase64Image = async (base64String, index) => {
+            if (!base64String || !base64String.startsWith('data:image')) {
+                return existingProduct.image[index - 1] || null; // Keep old image if null
+            }
+
+            const matches = base64String.match(/^data:image\/([a-zA-Z]+);base64,(.+)$/);
+            if (!matches) {
+                return existingProduct.image[index - 1] || null; 
+            }
+
+            const extension = matches[1]; 
+            const base64Data = matches[2];
+            const filename = `product_${productId}_${index}.${extension}`;
+            const filePath = path.join('uploads', filename);
+            
+            // Save the image file
+            fs.writeFileSync(filePath, base64Data, { encoding: 'base64' });
+            return filename;
+        };
+        // Process and save each cropped image or retain old ones
+        for (let i = 1; i <= 3; i++) {
+            updatedImages[i - 1] = await saveBase64Image(req.body[`croppedImage${i}`], i);
+        }
+        // Update product details in the database
         const updatedProduct = await ProductModel.findByIdAndUpdate(
             productId,
-            { name, price, description,stock,category},
+            { name, price, description, stock, category, image: updatedImages },
             { new: true }
         );
-        // Check if a new image was uploaded
-        if (req.file) {
-            updateFields.image = req.file.filename; // Assuming you're storing filename
-        }
 
         if (!updatedProduct) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
 
-        res.redirect('/admin/products')
+        res.redirect('/admin/products');
+
     } catch (error) {
         console.error(error);
     }
@@ -319,8 +347,6 @@ const logout=async(req,res)=>{
         console.error(error);
     }
 }
-
-
 
 
 

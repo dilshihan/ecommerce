@@ -141,8 +141,7 @@ const Loadhome = async (req, res) => {
 const loadmenu = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = 9; // Products per page
-        
+        const limit = 9; 
         const totalProducts = await Productmodel.countDocuments({});
         const totalPages = Math.ceil(totalProducts / limit);
         
@@ -151,7 +150,6 @@ const loadmenu = async (req, res) => {
             .limit(limit);
 
             if (req.xhr) { // If AJAX request
-                // Return JSON data instead of rendering full page
                 return res.json({
                     success: true,
                     products,
