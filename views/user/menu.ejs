@@ -81,10 +81,10 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
+                  <a class="nav-link" href="/user/about">About</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="book.html">Contact Us</a>
+                  <a class="nav-link" href="/user/contactus">Contact Us</a>
                 </li>
               </ul>
               <div class="user_option">
@@ -166,82 +166,75 @@
         <div class="heading_container heading_center">
           <h2>Our Menu</h2>
         </div>
-
+    
         <ul class="filters_menu">
           <li class="active" data-filter="*">All</li>
           <li data-filter=".burger">Burger</li>
           <li data-filter=".pizza">Pizza</li>
           <li data-filter=".drinks">Drinks</li>
         </ul>
-
+    
         <div class="filters-content">
           <div class="product-grid">
             <% products.forEach(product => { %>
-            <div class="product-card <%= product.category.toLowerCase() %>">
-              <div class="product-image">
-                <a
-                  href="/user/productdetails/<%= product._id %>"
-                  class="image-link"
-                >
-                  <img
-                    src="/uploads/<%= product.image[0] %>"
-                    alt="<%= product.name %>"
-                  />
-                </a>
-              </div>
-              <div class="product-info">
-                <h3 class="product-name"><%= product.name %></h3>
-                <div class="product-footer">
-                  <span class="price">$<%= product.price %></span>
-                  <a href="/add-to-cart/<%= product._id %>" class="cart-button">
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <circle cx="9" cy="21" r="1"></circle>
-                      <circle cx="20" cy="21" r="1"></circle>
-                      <path
-                        d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
-                      ></path>
-                    </svg>
-                    <span>Add to Cart</span>
-                  </a>
+              <% if (product.isListed) { %> 
+                <div class="product-card <%= product.category.toLowerCase() %>">
+                  <div class="product-image">
+                    <a href="/user/productdetails/<%= product._id %>" class="image-link">
+                      <img src="/uploads/<%= product.image[0] %>" alt="<%= product.name %>" />
+                    </a>
+                  </div>
+                  <div class="product-info">
+                    <h3 class="product-name"><%= product.name %></h3>
+                    <div class="product-footer">
+                      <span class="price">$<%= product.price %></span>
+                      <a href="/add-to-cart/<%= product._id %>" class="cart-button">
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <circle cx="9" cy="21" r="1"></circle>
+                          <circle cx="20" cy="21" r="1"></circle>
+                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span>Add to Cart</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              <% } %> <!-- End of isListed condition -->
             <% }); %>
           </div>
+    
           <div class="pagination">
             <% if (currentPage > 1) { %>
-            <button class="page-btn" data-page="<%= currentPage - 1 %>">
-              Previous
-            </button>
-            <% } %> <% for(let i = 1; i <= totalPages; i++) { %>
-            <button
-              class="page-btn <%= currentPage === i ? 'active' : '' %>"
-              data-page="<%= i %>"
-            >
-              <%= i %>
-            </button>
-            <% } %> <% if (currentPage < totalPages) { %>
-            <button class="page-btn" data-page="<%= currentPage + 1 %>">
-              Next
-            </button>
+              <button class="page-btn" data-page="<%= currentPage - 1 %>">Previous</button>
+            <% } %> 
+            
+            <% for(let i = 1; i <= totalPages; i++) { %>
+              <button class="page-btn <%= currentPage === i ? 'active' : '' %>" data-page="<%= i %>">
+                <%= i %>
+              </button>
+            <% } %> 
+            
+            <% if (currentPage < totalPages) { %>
+              <button class="page-btn" data-page="<%= currentPage + 1 %>">Next</button>
             <% } %>
           </div>
-
+    
           <div class="view-more">
             <a href="/user/menu" class="view-more-button">View More</a>
           </div>
         </div>
       </div>
     </section>
+    
     <!-- end food section -->
 
     <!-- footer section -->

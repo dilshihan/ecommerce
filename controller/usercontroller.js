@@ -142,10 +142,11 @@ const loadmenu = async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = 9; 
-        const totalProducts = await Productmodel.countDocuments({});
+        const filter = { isListed: true };
+        const totalProducts = await Productmodel.countDocuments(filter);
         const totalPages = Math.ceil(totalProducts / limit);
         
-        const products = await Productmodel.find({})
+        const products = await Productmodel.find(filter)
             .skip((page - 1) * limit)
             .limit(limit);
 
@@ -166,7 +167,23 @@ const loadmenu = async (req, res) => {
     } catch (error) {
         console.error(error);
     }
-}   
+}  
+
+const loadabout = async (req,res)=>{
+    try{
+        res.render('user/about')
+    }catch(error){
+        console.log(error)
+    }
+}
+
+const loadcontactus = async(req,res)=>{
+    try{
+        res.render('user/contactus')
+    }catch(error){
+        console.log(error)
+    }
+}
 
 const Productdetails = async (req, res) => {
         try { 
@@ -183,12 +200,7 @@ const Productdetails = async (req, res) => {
         } catch (error) {
             console.error(error);
         }
-    }
-
-const logout = (req,res)=>{
-        req.session.user=null;
-        res.redirect('/user/register')
-    }
+ }
 
 const handleGoogleLogin = async (req, res) => {
     try {
@@ -271,6 +283,13 @@ const handleGoogleCallback = async (req, res) => {
     }
 };
 
+const logout = (req,res)=>{
+    req.session.user=null;
+    res.redirect('/user/register')
+}
+
 module.exports={registerUser,loadregister,loginUser,
                verifyOTP,resendOTP,logout,Loadhome,
-               loadmenu,Productdetails,handleGoogleLogin,handleGoogleCallback}
+               loadmenu,loadabout,loadcontactus,
+               Productdetails,handleGoogleLogin,
+               handleGoogleCallback}

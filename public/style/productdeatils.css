@@ -460,16 +460,17 @@ body {
   
   .img-magnifier-glass {
     position: absolute;
-    border-radius: 50px;
-    width: 100px;
-    height: 100px;
-    cursor: none;
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
     display: none;
     background-clip: content-box;
-    pointer-events: none;
+    cursor: none;
+    pointer-events: auto;
 }
 .img-magnifier-glass {
     transition: border-color 0.3s ease;
+    cursor: none;
 }
   .thumbnail-container {
     display: flex;

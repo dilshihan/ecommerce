@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
+    <title>SNACK STORM</title>
     <link rel="stylesheet" href="/style/addproduct.css">
     <link rel="shortcut icon" href="/images/favicon.png" type="">
     <!-- Cropper.js -->
@@ -36,12 +36,13 @@
                 <label for="productCategory">Category</label>
                 <select id="productCategory" name="category" required>
                     <option value="">Select Category</option>
-                    <option value="burger">Burger</option>
-                    <option value="pizza">Pizza</option>
-                    <option value="drinks">Drinks</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category.name.toLowerCase() %>"><%= category.name %></option>
+                    <% }); %>
                 </select>
                 <div class="error-message" id="categoryError"></div>
             </div>
+            
 
             <div class="form-group">
                 <label for="productStock">Stock</label>
@@ -276,13 +277,11 @@
 
                 return isValid;
             }
-
             // Setup image cropper
             function setupImageCropper(number) {
                 const imageInput = document.getElementById(`productImage${number}`);
                 const previewImage = document.getElementById(`previewImage${number}`);
                 const cropButton = document.getElementById(`cropButton${number}`);
-
                 imageInput.addEventListener('change', function (e) {
                     const file = e.target.files[0];
                     if (file) {
@@ -291,11 +290,6 @@
                             previewImage.src = event.target.result;
                             previewImage.style.display = 'block';
                             cropButton.style.display = 'block';
-
-
-                            console.log("aaaaaaaaa", previewImage.src);
-
-
                             if (croppers[`cropper${number}`]) {
                                 croppers[`cropper${number}`].destroy();
                             }
@@ -310,29 +304,17 @@
                         reader.readAsDataURL(file);
                     }
                 });
-
                 cropButton.addEventListener('click', function () {
                     if (croppers[`cropper${number}`]) {
                         const canvas = croppers[`cropper${number}`].getCroppedCanvas();
-
                         if (canvas) {
                             const croppedDataUrl = canvas.toDataURL("image/png");
-
-                            // Ensure it's PNG or JPG
-
                             // Store the cropped image in the hidden input field
                             document.getElementById(`croppedImage${number}`).value = croppedDataUrl;
-
-                            // Update the preview to show the cropped image
                             previewImage.src = croppedDataUrl;
-
-                            // Destroy the cropper instance
                             croppers[`cropper${number}`].destroy();
                             croppers[`cropper${number}`] = null;
-
-                            // Hide crop button
                             cropButton.style.display = 'none';
-
                             Swal.fire({
                                 title: 'Success!',
                                 text: `Image ${number} has been cropped successfully!`,
@@ -351,31 +333,25 @@
                         }
                     }
                 });
-
             }
-
             // Setup croppers for all three images
             setupImageCropper(1);
             setupImageCropper(2);
             setupImageCropper(3);
-
             // Add validation on input/change
             Object.keys(validationRules).forEach(fieldId => {
                 const field = document.getElementById(fieldId);
                 field.addEventListener('input', () => validateField(field));
                 field.addEventListener('blur', () => validateField(field));
             });
-
             // Validate images
             async function validateImages() {
                 let isValid = true;
                 const requiredImages = 1;
                 let imageCount = 0;
-
                 for (let i = 1; i <= 3; i++) {
                     const imageInput = document.getElementById(`productImage${i}`);
                     const croppedImage = document.getElementById(`croppedImage${i}`);
-
                     if (imageInput.files.length > 0) {
                         imageCount++;
                         if (!croppedImage.value) {
@@ -405,7 +381,6 @@
                         }
                     }
                 }
-
                 if (imageCount < requiredImages) {
                     await Swal.fire({
                         title: 'Images Required',
@@ -417,13 +392,12 @@
 
                 return isValid;
             }
-
             // Form submission handler
             // Add this function to convert Data URI to Blob
             function dataURItoBlob(dataURI) {
                 const split = dataURI.split(',');
                 const byteString = atob(split[1]);
-                const mimeString = split[0].split(':')[1].split(';')[0];
+               const mimeString = split[0].split(':')[1].split(';')[0];
                 const ab = new ArrayBuffer(byteString.length);
                 const ia = new Uint8Array(ab);
                 for (let i = 0; i < byteString.length; i++) {
@@ -431,22 +405,18 @@
                 }
                 return new Blob([ab], { type: mimeString });
             }
-
             // Modify the form submission handler
             form.addEventListener('submit', async function (e) {
                 e.preventDefault();
-
                 let isValid = true;
                 Object.keys(validationRules).forEach(fieldId => {
                     if (!validateField(document.getElementById(fieldId))) {
                         isValid = false;
                     }
                 });
-
                 if (!await validateImages()) {
                     isValid = false;
                 }
-
                 if (isValid) {
                     Swal.fire({
                         title: 'Submitting...',
@@ -457,17 +427,14 @@
                             Swal.showLoading();
                         }
                     });
-
                     try {
                         const formData = new FormData();
-
                         // Append text fields
                         formData.append('name', document.getElementById('productName').value);
                         formData.append('description', document.getElementById('productDescription').value);
                         formData.append('category', document.getElementById('productCategory').value);
                         formData.append('stock', document.getElementById('productStock').value);
                         formData.append('price', document.getElementById('productPrice').value);
-
                         // Append cropped images
                         for (let i = 1; i <= 3; i++) {
                             const croppedImage = document.getElementById(`croppedImage${i}`).value;
@@ -476,13 +443,11 @@
                                 formData.append('image', blob, `image${i}.png`);
                             }
                         }
-
                         // Send the request
                         const response = await fetch('/admin/addproduct', {
                             method: 'POST',
                             body: formData
-                        });
-
+                        }); 
                         if (response.ok) {
                             Swal.fire({
                                 title: 'Success!',
@@ -491,11 +456,11 @@
                                 timer: 2000,
                                 showConfirmButton: false
                             }).then(() => {
-                                window.location.href = '/admin/products'; // Redirect after success
+                                window.location.href = '/admin/products'; 
                             });
                         } else {
                             const error = await response.json();
-                            throw new Error(error.message || 'Failed to add product');
+                            throw new Error(error.message );
                         }
                     } catch (error) {
                         Swal.fire({
@@ -510,7 +475,6 @@
                         text: 'Please check the form for errors and try again.',
                         icon: 'error'
                     });
-
                     const firstError = document.querySelector('.form-group.error');
                     if (firstError) {
                         firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -520,5 +484,4 @@
         })
     </script>
 </body>
-
 </html>

@@ -29,11 +29,15 @@
   <link href="/css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="/css/responsive.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/style/productdeatils.css">
 
 </head>
 
+<body class="sub_page">
 
+  <div class="hero_area">
+    <div class="bg-box">
+      <img src="/images/hero-bg.jpg" alt="">
+    </div>
     <!-- header section strats -->
     <header class="header_section">
       <div class="container">
@@ -50,14 +54,14 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  mx-auto ">
-              <li class="nav-item">
+              <li class="nav-item ">
                 <a class="nav-link" href="/user/home">Home </a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="/user/menu">Menu <span class="sr-only">(current)</span> </a>
-              </li>
               <li class="nav-item">
-                <a class="nav-link" href="/user/about">About</a>
+                <a class="nav-link" href="/user/menu">Menu</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="/user/about">About <span class="sr-only">(current)</span> </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/user/contactus">Contact Us</a>
@@ -133,102 +137,45 @@
     </header>
     <!-- end header section -->
   </div>
-  <section class="food_section layout_padding">
-    <div class="container">
+
+  <!-- about section -->
+
+  <section class="about_section layout_padding">
+    <div class="container  ">
+
       <div class="row">
-        <div class="col-md-6">
-          <div class="img-magnifier-container">
-            <img id="mainImage" src="/uploads/<%= products.image[0] %>" alt="<%= products.name %>" width="100%">
+        <div class="col-md-6 ">
+          <div class="img-box">
+            <img src="/images/about-img.png" alt="">
           </div>
-         <!-- Thumbnail Images -->
-        <div class="thumbnail-container">
-          <% products.image.forEach(function(img, index) { %>
-            <img src="/uploads/<%= img %>" alt="<%= products.name %>" class="thumbnail" onclick="changeMainImage(this.src)">
-          <% }); %>
-       </div>
-          
         </div>
         <div class="col-md-6">
           <div class="detail-box">
             <div class="heading_container">
-              <h2><%= products.name %></h2>
-              <span class="category-badge"><%= products.category %></span>
+              <h2>
+                We Are SNACK STORM
+              </h2>
             </div>
-            <div class="product-info mt-4">
-              <h4 class="price-area mb-4">
-                $<%= products.price %>
-              </h4>
-              <div class="product-meta mb-4">
-                <div class="stock-info">
-                  <span class="label">Stock Status:</span>
-                  <% if (products.stock > 0) { %>
-                    <span class="in-stock">In Stock (<%= products.stock %> items)</span>
-                  <% } else { %>
-                    <span class="out-of-stock">Out of Stock</span>
-                  <% } %>
-                </div>
-                <div class="category-info mt-2">
-                  <span class="label">Category:</span>
-                  <span class="value"><%= products.category %></span>
-                </div>
-              </div>
-              <div class="description-area mb-4">
-                <h5>Description</h5>
-                <p><%= products.description %></p>
-              </div>
-              <div class="action-area">
-                <% if (products.stock > 0) { %>
-                  <a href="/add-to-cart/<%= products._id %>" class="btn btn-primary">
-                    Add to Cart
-                  </a>
-                <% } else { %>
-                  <button class="btn btn-secondary" disabled>Out of Stock</button>
-                <% } %>
-                <a href="/user/menu" class="btn btn-outline-secondary ml-3">
-                  Back to Menu
-                </a>
-              </div>
-            </div>
+            <p>
+                Welcome to SNACK STORM, where every bite and sip is a burst of flavor! We serve up the best pizzas, burgers, and refreshing drinks to satisfy your cravings like never before.<br>
+
+                🍕 PIZZA - A Slice of Happiness!<br>
+                Our pizzas are made with fresh dough, rich tomato sauce, and premium toppings, baked to perfection with gooey, melted cheese. Whether you love classic Margherita, spicy Peri-Peri Chicken, or cheesy overload, we’ve got something for every pizza lover.<br>
+                
+                🍔 BURGER - Big, Juicy & Irresistible!<br>
+                Our burgers are stacked with succulent patties, fresh veggies, and mouthwatering sauces, all packed between soft, toasted buns. From the classic cheeseburger to loaded BBQ beef, we promise a juicy bite every time!<br>
+                
+                🥤 DRINKS - Cool & Refreshing!<br>
+                Pair your meal with our ice-cold drinks! Choose from classic soft drinks, fresh juices, milkshakes, or chilled iced tea to keep you refreshed and satisfied.
+            </p>
           </div>
         </div>
       </div>
     </div>
-</section>
-<section class="food_section">
-  <div class="container">
-    <div class="heading_container heading_center">
-      <h2>Related Products</h2>
-    </div>
-    
-    <div class="row related-products">
-      <% if (typeof relatedProducts !== 'undefined' && relatedProducts.length > 0) { %>
-        <% relatedProducts.forEach(function(product) { %>
-          <div class="col-sm-6 col-lg-3">
-            <a href="/user/productdetails/<%= product._id %>" class="product-link">
-              <div class="product-box">
-                <div class="img-box">
-                  <img src="/uploads/<%= product.image[0] %>" alt="<%= product.name %>" class="img-fluid">
-                </div>
-                <div class="detail-box">
-                  <h5><%= product.name %></h5>
-                  <div class="price-box">
-                    <h6 class="price">$<%= product.price %></h6>
-                    <% if (product.stock > 0) { %>
-                      <span class="stock-status">In Stock</span>
-                    <% } else { %>
-                      <span class="stock-status out">Out of Stock</span>
-                    <% } %>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
-        <% }); %>
-      <% } %>
-    </div>
-  </div>
-</section>
-   <!-- end food section -->
+  </section>
+
+  <!-- end about section -->
+
   <!-- footer section -->
   <footer class="footer_section">
     <div class="container">
@@ -254,7 +201,7 @@
               <a href="">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  mohddilshan1234321@gmail.com
+                  mohddilshan12344321@gmail.com
                 </span>
               </a>
             </div>
@@ -266,7 +213,7 @@
                 SNACK STORM
             </a>
             <p>
-              Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
+                Scak Storm is a powerful force, bringing energy and creativity. Ideas collide, forming something new and impactful. It’s a surge of innovation, shaping the future with unstoppable momentum.
             </p>
             <div class="footer_social">
               <a href="">
@@ -302,7 +249,7 @@
       <div class="footer-info">
         <p>
           &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="">muhammed dilshihan</a><br><br>
+          <a href="">dilshihan</a><br><br>
           &copy; <span id="displayYear"></span> Distributed By
           <a href="" target="_blank">dilshihan</a>
         </p>
@@ -331,123 +278,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
   <!-- End Google Map -->
-  <script>
-    function changeImage(thumbnail) {
-      document.getElementById("mainImage").src = thumbnail.src;
-    }
-  </script>
-  <script>
-    function changeMainImage(newSrc) {
-        const mainImage = document.getElementById('mainImage');
-        mainImage.src = newSrc;
-    }
-    </script>
-  <script>
-
-let lastScrollTop = 0;
-const header = document.querySelector('.header_section');
-let headerHeight = header.offsetHeight;
-
-window.addEventListener('scroll', function() {
-    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (currentScroll > lastScrollTop && currentScroll > headerHeight) {
-        // Scrolling down
-        header.style.transform = 'translateY(-100%)';
-    } else {
-        // Scrolling up
-        header.style.transform = 'translateY(0)';
-    }
-    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-}, false);
-  </script>
-  <script>
-    function magnify(imgID, zoom) {
-  var img, glass, w, h, bw;
-  img = document.getElementById(imgID);
-
-  /* Create magnifier glass: */
-  glass = document.createElement("DIV");
-  glass.setAttribute("class", "img-magnifier-glass");
-
-  /* Insert magnifier glass: */
-  img.parentElement.insertBefore(glass, img);
-
-  /* Set background properties for the magnifier glass: */
-  glass.style.backgroundImage = "url('" + img.src + "')";
-  glass.style.backgroundRepeat = "no-repeat";
-  glass.style.backgroundSize = (img.width * zoom) + "px " + (img.height * zoom) + "px";
-  bw = 3;
-  w = glass.offsetWidth / 2;
-  h = glass.offsetHeight / 2;
-
-  /* Execute a function when someone moves the magnifier glass over the image: */
-  glass.addEventListener("mousemove", moveMagnifier);
-  img.addEventListener("mousemove", moveMagnifier);
-
-  /* Show glass when entering image */
-  img.addEventListener("mouseenter", function() {
-    glass.style.display = "block";
-    document.body.style.cursor = "none";
-  });
-
-  /* Hide glass when leaving image */
-  img.addEventListener("mouseleave", function() {
-    glass.style.display = "none";
-    document.body.style.cursor = "default"; 
-  });
-
-  function moveMagnifier(e) {
-    var pos, x, y;
-    /* Prevent any other actions that may occur when moving over the image */
-    e.preventDefault();
-    /* Get the cursor's x and y positions: */
-    pos = getCursorPos(e);
-    x = pos.x;
-    y = pos.y;
-
-    /* Prevent the magnifier glass from being positioned outside the image: */
-    if (x > img.width - (w / zoom)) {x = img.width - (w / zoom);}
-    if (x < w / zoom) {x = w / zoom;}
-    if (y > img.height - (h / zoom)) {y = img.height - (h / zoom);}
-    if (y < h / zoom) {y = h / zoom;}
-
-    /* Set the position of the magnifier glass: */
-    glass.style.left = (x - w) + "px";
-    glass.style.top = (y - h) + "px";
-
-    /* Display what the magnifier glass "sees": */
-    glass.style.backgroundPosition = "-" + ((x * zoom) - w) + "px -" + ((y * zoom) - h) + "px";
-  }
-
-  function getCursorPos(e) {
-    var a, x = 0, y = 0;
-    e = e || window.event;
-    /* Get the x and y positions of the image: */
-    a = img.getBoundingClientRect();
-    /* Calculate the cursor's x and y coordinates, relative to the image: */
-    x = e.pageX - a.left - window.pageXOffset;
-    y = e.pageY - a.top - window.pageYOffset;
-    /* Consider any page scrolling: */
-    return {x : x, y : y};
-  }
-}
-
-function changeMainImage(newSrc) {
-  const mainImage = document.getElementById('mainImage');
-  mainImage.src = newSrc;
-  // Reinitialize magnifier after changing image
-  setTimeout(() => {
-    magnify("mainImage", 3);
-  }, 100);
-}
-
-// Initialize magnifier when page loads
-document.addEventListener('DOMContentLoaded', function() {
-  magnify("mainImage", 3);
-});
-  </script>
-  
 
 </body>
+
 </html>

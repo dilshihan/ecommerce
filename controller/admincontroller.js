@@ -99,9 +99,14 @@ const loadProducts = async (req, res) => {
     }
 };
 
-const loadaddproduct =async (req,res)=>{
-    res.render('admin/addproduct',{title:'Add Product'})
-}
+const loadaddproduct = async (req, res) => {
+    try {
+        const categories = await Categorymodel.find({}); 
+        res.render("admin/addproduct", { title: "Add Product", categories });
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const addProduct = async (req, res) => {
     try {
@@ -115,6 +120,10 @@ const addProduct = async (req, res) => {
 
         if (!name || !price || !category || !description||!stock) {
             return res.status(400).send("all field are required");
+        }
+        const existingProduct = await ProductModel.findOne( {name: { $regex: new RegExp(`^${name}$`, "i") }});
+        if (existingProduct) {
+            return res.status(400).json({ message: "Product already exists!" });
         }
         const newProduct = new ProductModel({ 
             name, 
@@ -140,12 +149,13 @@ const loadupdateProduct = async (req, res) => {
     try {
         const productId = req.params.id;
         const product = await ProductModel.findById(productId);
+        const categories = await Categorymodel.find({})
 
         if (!product) {
             return res.status(404).send("Product not found");
         }
 
-        res.render("admin/updateproduct", { product });
+        res.render("admin/updateproduct", { product,categories });
     } catch (error) {
         console.error(error);
     }
@@ -159,6 +169,11 @@ const updateProduct = async (req, res) => {
         const existingProduct = await ProductModel.findById(productId);
         if (!existingProduct) {
             return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        const duplicateProduct = await ProductModel.findOne({name: { $regex: new RegExp(`^${name}$`, "i")}, _id: { $ne: productId } });
+        if (duplicateProduct) {
+            return res.status(400).json({ success: false, message: "Product name already exists!" });
         }
 
         let updatedImages = existingProduct.image || []; 
@@ -253,7 +268,7 @@ const addcategory = async (req, res) => {
     const { name, description } = req.body;
 
     try {
-        const existingCategory = await Categorymodel.findOne({ name });
+        const existingCategory = await Categorymodel.findOne({ name: { $regex: new RegExp(`^${name}$`, "i") } });
 
         if (existingCategory) {
             return res.status(400).json({ success: false, message: "Category already exists!" });
@@ -288,6 +303,11 @@ const updateCategory = async (req, res) => {
     try {
         const { name, description } = req.body;
         const categoryId = req.params.id;
+
+        const existingCategory = await Categorymodel.findOne({ name: { $regex: new RegExp(`^${name}$`, "i") },  _id: { $ne: categoryId }});
+        if (existingCategory) {
+            return res.status(400).json({ success: false, message: "Category name already exists. Choose a different name." });
+        }
 
         const updatedCategory = await Categorymodel.findByIdAndUpdate(
             categoryId,
