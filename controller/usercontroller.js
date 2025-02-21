@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const saltround = 10
 const nodemailer = require('nodemailer')
 const Category = require('../model/categorymodel')
+const cartmodel = require('../model/cartmodel')
 
 
 
@@ -66,6 +67,8 @@ const verifyOTP = async (req, res) => {
         
         const products = await Productmodel.find({});
         const catogorys=await Category.find({})
+        req.session.user = user._id; //Store ObjectId
+
 
         res.render('user/home', { products, message: 'Account created successfully' ,catogorys});
 
@@ -130,9 +133,12 @@ const loadregister = async (req,res)=>{
 
 const Loadhome = async (req, res) => {
     try {
-        const products = await Productmodel.find({}); // Fetch all products
-        const catogorys = await Category.find({}); 
-        res.render("user/home", { products ,catogorys}); // Pass products to EJS
+      const   userid = req.session.user 
+        const products = await Productmodel.find({});
+        const catogorys = await Category.find({});
+        const user = await userschema.findById(userid) 
+
+        res.render("user/home", { products ,catogorys,user}); 
     } catch (error) {
         console.error(error);
     }
@@ -140,12 +146,13 @@ const Loadhome = async (req, res) => {
 
 const loadmenu = async (req, res) => {
     try {
+        const   userid = req.session.user 
         const page = parseInt(req.query.page) || 1;
         const limit = 9; 
         const filter = { isListed: true };
+        const user = await userschema.findById(userid)
         const totalProducts = await Productmodel.countDocuments(filter);
         const totalPages = Math.ceil(totalProducts / limit);
-        
         const products = await Productmodel.find(filter)
             .skip((page - 1) * limit)
             .limit(limit);
@@ -161,7 +168,8 @@ const loadmenu = async (req, res) => {
                 return res.render("user/menu", { 
                     products,
                     currentPage: page,
-                    totalPages
+                    totalPages,
+                    user
                 });
             }
     } catch (error) {
@@ -201,6 +209,95 @@ const Productdetails = async (req, res) => {
             console.error(error);
         }
  }
+
+ const loadcart = async (req, res) => {
+    try {
+        const userId = req.session?.user
+        if (!userId) {
+            return res.render("user/cart", { cart: [], totalPrice: 0 });
+        }
+        const cart = await cartmodel.findOne({ userId }).populate("products.productId");
+        if (!cart || cart.products.length === 0) {
+            return res.render("user/cart", { cart: [], totalPrice: 0 });
+        }
+        const cartItems = cart.products.map((item) => ({
+            id: item.productId._id,
+            name: item.productId.name,
+            image: item.productId.image,
+            price: item.productId.price,
+            quantity: item.quantity,
+        }));
+        const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        res.render("user/cart", { cart: cartItems, totalPrice });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+ const addtocart = async (req, res) => {
+    try {
+        const { userId, productId, quantity } = req.body;
+        if (!userId || !productId || !quantity) {
+            return res.status(400).json({ success: false, message: "Missing required fields!" });
+        }
+        const product = await Productmodel.findById(productId);
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found!" });
+        }
+        if (quantity > product.stock) {
+            return res.status(400).json({ success: false, message: "Not enough stock available!" });
+        }
+        let cart = await cartmodel.findOne({ userId });
+        if (!cart) {
+            cart = new cartmodel({ userId, products: [], totalPrice: 0 });
+        }
+        const existingProductIndex = cart.products.findIndex(
+            (item) => item.productId.toString() === productId
+        );
+
+        if (existingProductIndex !== -1) {
+            cart.products[existingProductIndex].quantity += quantity;
+        } else {
+            cart.products.push({
+                productId,
+                quantity,
+            });
+        }
+        cart.totalPrice = 0;
+        for (let item of cart.products) {
+            const product = await Productmodel.findById(item.productId);
+            if (product) {
+                cart.totalPrice += product.price * item.quantity;
+            }
+        }
+        await cart.save();
+
+        res.json({ success: true, message: "Product added to cart!", cart });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const removefromcart = async (req, res) => {
+    try {
+        console.log("Route hit: /remove-from-cart");
+        const { id } = req.body;
+      
+        console.log("Received ID:", id);
+        if (!req.session.cart||req.session.cart.length === 0) {
+            return res.json({ success: false, message: "Cart is empty!" });
+        }
+        console.log("Cart Before Removal:", req.session.cart);
+ 
+        const updatedCart = req.session.cart.filter(item => item.id !== id);
+        req.session.cart = updatedCart; 
+        console.log("Cart After Removal:", req.session.cart);
+
+        res.json({ success: true, message: "Product removed from cart!", cart: req.session.cart });
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 const handleGoogleLogin = async (req, res) => {
     try {
@@ -291,5 +388,5 @@ const logout = (req,res)=>{
 module.exports={registerUser,loadregister,loginUser,
                verifyOTP,resendOTP,logout,Loadhome,
                loadmenu,loadabout,loadcontactus,
-               Productdetails,handleGoogleLogin,
-               handleGoogleCallback}
+               Productdetails,loadcart,addtocart,removefromcart,
+               handleGoogleLogin,handleGoogleCallback}

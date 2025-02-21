@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const usermodel = require('../model/usermodel')
 const ProductModel = require('../model/prodectmodel')
 const  Categorymodel = require('../model/categorymodel')
+const ordermodel = require('../model/ordermodel')
 const fs = require('fs');
 const path = require('path');
 
@@ -359,6 +360,29 @@ const Categorylisting = async (req, res) => {
     }
 };
 
+const loadorders = async (req, res) => {
+    try {
+        const admin = req.session.admin;
+        if (!admin) return res.redirect('/admin/login');
+
+        let page = parseInt(req.query.page) || 1; 
+        let limit = 5; 
+        let skip = (page - 1) * limit; 
+
+        const totalOrders = await ordermodel.countDocuments();
+        const orders = await ordermodel.find().skip(skip).limit(limit);
+
+        res.render('admin/order', {
+            orders, 
+            currentPage: page,
+            totalPages: Math.ceil(totalOrders / limit) 
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const logout=async(req,res)=>{
     try {
         req.session.admin = null; 
@@ -377,4 +401,4 @@ loaduser,banUser,loadProducts,loadaddproduct,
 addProduct,loadcategory,loadaddcategory,
 addcategory,loadUpdateCategory,updateCategory,
 Categorylisting,Productlisting,loadupdateProduct,
-updateProduct,logout}
+updateProduct,loadorders,logout}

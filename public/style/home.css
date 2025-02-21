@@ -138,6 +138,7 @@
 }
 
 .product_carousel_section .options svg {
+  cursor: pointer;
   width: 20px;
   height: 20px;
   fill: #f1612d;

@@ -40,6 +40,8 @@
 
 <!-- Owl Carousel JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
 </head>
@@ -85,7 +87,7 @@
               <a href="" class="user_link">
                 <i class="fa fa-user" aria-hidden="true"></i>
               </a>
-              <a class="cart_link" href="#">
+              <a class="cart_link" href="/user/cart">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
@@ -406,8 +408,12 @@
                           <h5><%= products[j].name %></h5>
                           <div class="options">
                             <h6>$<%= products[j].price %></h6>
-                            <a href="">
-                              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
+                            <% if (user) { %>
+                              <a onclick="addToCart('<%= products[j]._id %>', 1, '<%= products[j].name %>', '<%= user._id %>')" class="add-to-cart">
+                          <% } else { %>
+                              <a onclick="Swal('Please log in to add items to the cart.')" class="add-to-cart">
+                          <% } %>
+                                  <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                                 <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
                                   c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
                                 <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
@@ -691,6 +697,47 @@
       });
     });
     </script>
+    <script>
+      
+      async function addToCart(productId, quantity, productName, userId) {
+    try {
+        const response = await fetch("/user/add-to-cart", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId, productId, quantity }),
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            Swal.fire({
+                title: "Added to Cart!",
+                text: `${productName} has been added successfully.`,
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            Swal.fire({
+                title: "Error!",
+                text: data.message,
+                icon: "error",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        Swal.fire({
+            title: "Oops!",
+            text: "Something went wrong. Please try again later.",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000
+        });
+    }
+}
+
+   </script>      
 
 </body>
 

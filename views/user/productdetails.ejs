@@ -30,6 +30,7 @@
   <!-- responsive style -->
   <link href="/css/responsive.css" rel="stylesheet" />
   <link rel="stylesheet" href="/style/productdeatils.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -53,8 +54,8 @@
               <li class="nav-item">
                 <a class="nav-link" href="/user/home">Home </a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="/user/menu">Menu <span class="sr-only">(current)</span> </a>
+              <li class="nav-item ">
+                <a class="nav-link" href="/user/menu">Menu </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/user/about">About</a>
@@ -67,7 +68,7 @@
               <a href="" class="user_link">
                 <i class="fa fa-user" aria-hidden="true"></i>
               </a>
-              <a class="cart_link" href="#">
+              <a class="cart_link" href="/user/cart">
                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;" xml:space="preserve">
                   <g>
                     <g>
@@ -178,8 +179,11 @@
               </div>
               <div class="action-area">
                 <% if (products.stock > 0) { %>
-                  <a href="/add-to-cart/<%= products._id %>" class="btn btn-primary">
+                  <a href=""class="add-to-cart" data-id="<%= products._id %>" data-name="<%= products.name %>" data-price="<%= products.price %>" data-image="<%= products.image[0] %>">
                     Add to Cart
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
                   </a>
                 <% } else { %>
                   <button class="btn btn-secondary" disabled>Out of Stock</button>
@@ -330,7 +334,6 @@
   <!-- Google Map -->
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
-  <!-- End Google Map -->
   <script>
     function changeImage(thumbnail) {
       document.getElementById("mainImage").src = thumbnail.src;
@@ -447,6 +450,59 @@ document.addEventListener('DOMContentLoaded', function() {
   magnify("mainImage", 3);
 });
   </script>
+   <script>
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+  button.addEventListener('click', function (event) {
+      event.preventDefault();
+      
+      const productId = this.getAttribute('data-id');
+      const productName = this.getAttribute('data-name');
+      const productPrice = this.getAttribute('data-price');
+      const productImage = this.getAttribute('data-image');
+
+      fetch('/user/add-to-cart', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+              id: productId,
+              name: productName,
+              price: productPrice,
+              image: productImage,
+              quantity: 1
+          })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              Swal.fire({
+                  icon: "success",
+                  title: "Added to Cart!",
+                  text: `${productName} has been added to your cart.`,
+                  showConfirmButton: false,
+                  timer: 1500
+              });
+          } else {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Failed to add product to cart. Please try again.",
+              });
+          }
+      })
+      .catch(error => {
+          Swal.fire({
+              icon: "error",
+              title: "Error!",
+              text: "Something went wrong. Try again later.",
+          });
+      });
+  });
+});
+
+  </script>
+
   
 
 </body>

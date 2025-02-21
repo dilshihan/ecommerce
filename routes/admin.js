@@ -10,7 +10,7 @@ router.get('/dashboard',adminauth.checksession,admincontreller.loaddashboard)
 router.get('/users',adminauth.checksession,admincontreller.loaduser)
 router.post('/ban-user',adminauth.checksession,admincontreller.banUser)
 router.get('/products',adminauth.checksession,admincontreller.loadProducts);
-router.get('/addproduct',adminauth.checksession,adminauth.checksession,admincontreller.loadaddproduct)
+router.get('/addproduct',adminauth.checksession,admincontreller.loadaddproduct)
 router.post('/addproduct', upload,adminauth.checksession, admincontreller.addProduct);
 router.post('/products',adminauth.checksession,admincontreller.Productlisting)
 router.get("/updateproduct/:id",adminauth.checksession, admincontreller.loadupdateProduct)
@@ -21,6 +21,7 @@ router.post('/addcategory',adminauth.checksession,admincontreller.addcategory)
 router.get('/categories/update/:id',adminauth.checksession, admincontreller.loadUpdateCategory);
 router.post('/categories/update/:id', adminauth.checksession,admincontreller.updateCategory)
 router.post('/categories/listing',adminauth.checksession, admincontreller.Categorylisting);
+router.get('/order',adminauth.checksession,admincontreller.loadorders)
 router.get('/logout',adminauth.checksession,admincontreller.logout)
 
 

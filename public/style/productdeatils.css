@@ -106,18 +106,28 @@ body {
     color: #ffbe33;
 }
 
-.cart_link {
+.add-to-cart {
     position: relative;
+    display: inline-block;
+    padding: 13px 30px;
+    background-color: #ffbe33;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
-.cart_link svg {
+.add-to-cart svg {
     width: 20px;
     height: 20px;
     fill: #ffffff;
     transition: all 0.3s ease;
 }
 
-.cart_link:hover svg {
+.add-to-cart:hover svg {
+    fill: #ffbe33;
+}
+.add-to-cart:hover {
     fill: #ffbe33;
 }
 
