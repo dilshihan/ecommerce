@@ -195,6 +195,8 @@ const loadcontactus = async(req,res)=>{
 
 const Productdetails = async (req, res) => {
         try { 
+            const   userid = req.session.user 
+            const user = await userschema.findById(userid)
             const products = await Productmodel.findById(req.params.id);
             if (!products) {
                 return res.redirect('/user/menu');
@@ -204,7 +206,7 @@ const Productdetails = async (req, res) => {
                 _id: { $ne: req.params.id } // Exclude current product
             }).limit(4);
             
-            res.render('user/productdetails', { products,relatedProducts});
+            res.render('user/productdetails', { products,relatedProducts,user});
         } catch (error) {
             console.error(error);
         }
@@ -280,24 +282,47 @@ const Productdetails = async (req, res) => {
 
 const removefromcart = async (req, res) => {
     try {
-        console.log("Route hit: /remove-from-cart");
-        const { id } = req.body;
-      
-        console.log("Received ID:", id);
-        if (!req.session.cart||req.session.cart.length === 0) {
-            return res.json({ success: false, message: "Cart is empty!" });
-        }
-        console.log("Cart Before Removal:", req.session.cart);
- 
-        const updatedCart = req.session.cart.filter(item => item.id !== id);
-        req.session.cart = updatedCart; 
-        console.log("Cart After Removal:", req.session.cart);
+        const userId = req.session?.user;
+        const productId = req.params.productId; 
 
-        res.json({ success: true, message: "Product removed from cart!", cart: req.session.cart });
+        if (!userId) {
+            return res.status(401).json({ message: "User not authenticated" });
+        }
+
+        const cart = await cartmodel.findOneAndUpdate(
+            { userId },
+            { $pull: { products: { productId } } }, 
+            { new: true }
+        ).populate("products.productId");
+
+        if (!cart) {
+            return res.status(404).json({ message: "Cart not found" });
+        }
+
+        const cartItems = cart.products.map((item) => ({
+            id: item.productId._id,
+            name: item.productId.name,
+            image: item.productId.image,
+            price: item.productId.price,
+            quantity: item.quantity,
+        }));
+
+        const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+        res.json({ cart: cartItems, totalPrice, message: "Item removed successfully" });
+        
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
-};
+};  
+
+const loaduserprofile = async(req,res)=>{
+    try{
+        res.render('user/userprofile')
+    }catch(error){
+        console.log(error)
+    }
+}
 
 const handleGoogleLogin = async (req, res) => {
     try {
@@ -388,5 +413,6 @@ const logout = (req,res)=>{
 module.exports={registerUser,loadregister,loginUser,
                verifyOTP,resendOTP,logout,Loadhome,
                loadmenu,loadabout,loadcontactus,
-               Productdetails,loadcart,addtocart,removefromcart,
+               Productdetails,loadcart,addtocart,
+               removefromcart,loaduserprofile,
                handleGoogleLogin,handleGoogleCallback}

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="/images/favicon.png" type="" />
+    <title>SNACK STORM - User Profile</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+        integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/responsive.css" />
+    <link href="/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style/userprofile.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="sub_page">
+    <header class="header_section">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+                <a class="navbar-brand" href="/user/home">
+                    <span> SNACK STORM </span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class=""> </span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/home">Home </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/menu">Menu </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/contactus">Contact Us</a>
+                        </li>
+                    </ul>
+                    <div class="user_option">
+                        <a href="/user/userprofile" class="user_link active">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </a>
+                        <a class="cart_link" href="/user/cart">
+                            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029"
+                                style="enable-background: new 0 0 456.029 456.029" xml:space="preserve">
+                                <g>
+                                    <g>
+                                        <path d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                     c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                     C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                     c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                     C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                     c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                                    </g>
+                                </g>
+                            </svg>
+                        </a>
+                        <form class="form-inline">
+                            <button class="btn my-2 my-sm-0 nav_search-btn" type="submit">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="hero_area"></div>
+
+    <!-- profile section -->
+    <section class="profile_section layout_padding">
+        <div class="container">
+            <div class="heading_container">
+                <h2>My Profile</h2>
+            </div>
+            <div class="row mt-4">
+                <!-- Sidebar -->
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <ul class="sidebar_nav">
+                            <li>
+                                <a href="#" class="active" data-tab="profile">
+                                    <i class="fa fa-user"></i> Personal Info
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-tab="addresses">
+                                    <i class="fa fa-map-marker"></i> My Addresses
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-tab="orders">
+                                    <i class="fa fa-shopping-bag"></i> Order History
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-tab="password">
+                                    <i class="fa fa-lock"></i> Change Password
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/user/logout">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9">
+                    <div class="profile_container">
+                        <!-- Profile Tab -->
+                        <div id="profile" class="tab_content active">
+                            <div class="profile_header">
+                                <div class="profile_avatar">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="profile_title">
+                                    <h3>John Doe</h3>
+                                    <p>johndoe@example.com</p>
+                                </div>
+                            </div>
+
+                            <!-- View Mode (default) -->
+                            <div id="profile_view_mode">
+                                <div class="profile_info">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="info_item">
+                                                <div class="info_label">First Name</div>
+                                                <div class="info_value">John</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="info_item">
+                                                <div class="info_label">Last Name</div>
+                                                <div class="info_value">Doe</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="info_item">
+                                                <div class="info_label">Email Address</div>
+                                                <div class="info_value">johndoe@example.com</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="info_item">
+                                                <div class="info_label">Phone Number</div>
+                                                <div class="info_value">+1 234 567 8900</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn_container">
+                                    <button id="edit_profile_btn" class="btn_edit">Edit Profile</button>
+                                </div>
+                            </div>
+
+                            <!-- Edit Mode (hidden by default) -->
+                            <div id="profile_edit_mode" class="edit_form">
+                                <form id="profile-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form_group">
+                                                <label class="form_label">First Name</label>
+                                                <input type="text" class="form_control" value="John" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form_group">
+                                                <label class="form_label">Last Name</label>
+                                                <input type="text" class="form_control" value="Doe" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form_group">
+                                                <label class="form_label">Email Address</label>
+                                                <input type="email" class="form_control" value="johndoe@example.com" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form_group">
+                                                <label class="form_label">Phone Number</label>
+                                                <input type="tel" class="form_control" value="+1 234 567 8900" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form_group">
+                                                <label class="form_label">Profile Picture</label>
+                                                <input type="file" class="form_control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn_container">
+                                        <button type="button" id="cancel_edit_btn" class="btn_cancel">Cancel</button>
+                                        <button type="submit" class="btn_update">Update Profile</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Addresses Tab -->
+                        <div id="addresses" class="tab_content">
+                            <a href="#" class="add_new_btn"><i class="fa fa-plus"></i> Add New Address</a>
+                            <div class="address_card">
+                                <h5>Home</h5>
+                                <p>123 Main Street, Apt 4B<br>New York, NY 10001<br>United States</p>
+                                <div class="address_actions">
+                                    <button><i class="fa fa-pencil"></i> Edit</button>
+                                    <button><i class="fa fa-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                            <div class="address_card">
+                                <h5>Work</h5>
+                                <p>456 Business Avenue<br>New York, NY 10002<br>United States</p>
+                                <div class="address_actions">
+                                    <button><i class="fa fa-pencil"></i> Edit</button>
+                                    <button><i class="fa fa-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orders Tab -->
+                        <div id="orders" class="tab_content">
+                            <div class="order_card">
+                                <div class="order_details">
+                                    <div>
+                                        <h5>Order #SNK1001</h5>
+                                        <p>Placed on Feb 20, 2025</p>
+                                    </div>
+                                    <div>
+                                        <span class="order_status status_delivered">Delivered</span>
+                                    </div>
+                                </div>
+                                <p><strong>Items:</strong> Double Cheeseburger, Fries, Soda</p>
+                                <p><strong>Total:</strong> $24.99</p>
+                                <div class="order_actions">
+                                    <button><i class="fa fa-eye"></i> View Details</button>
+                                    <button><i class="fa fa-redo"></i> Reorder</button>
+                                </div>
+                            </div>
+                            <div class="order_card">
+                                <div class="order_details">
+                                    <div>
+                                        <h5>Order #SNK1002</h5>
+                                        <p>Placed on Feb 25, 2025</p>
+                                    </div>
+                                    <div>
+                                        <span class="order_status status_processing">Processing</span>
+                                    </div>
+                                </div>
+                                <p><strong>Items:</strong> Veggie Burger, Onion Rings, Milkshake</p>
+                                <p><strong>Total:</strong> $22.50</p>
+                                <div class="order_actions">
+                                    <button><i class="fa fa-eye"></i> View Details</button>
+                                    <button><i class="fa fa-ban"></i> Cancel Order</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Password Tab -->
+                        <div id="password" class="tab_content">
+                            <form id="password-form">
+                                <div class="form_group">
+                                    <label class="form_label">Current Password</label>
+                                    <input type="password" class="form_control" />
+                                </div>
+                                <div class="form_group">
+                                    <label class="form_label">New Password</label>
+                                    <input type="password" class="form_control" />
+                                </div>
+                                <div class="form_group">
+                                    <label class="form_label">Confirm New Password</label>
+                                    <input type="password" class="form_control" />
+                                </div>
+                                <div class="btn_container">
+                                    <button type="submit" class="btn_update">Update Password</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer section -->
+    <footer class="footer_section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footer-col">
+                    <div class="footer_contact">
+                        <h4>Contact Us</h4>
+                        <div class="contact_link_box">
+                            <a href="">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <span> Location </span>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                <span> Call +91 8089113204 </span>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <span> mohddilshan1234321@gmail.com </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 footer-col">
+                    <div class="footer_detail">
+                        <a href="" class="footer-logo"> SNACK STORM </a>
+                        <p>
+                            Necessary, making this the first true generator on the Internet.
+                            It uses a dictionary of over 200 Latin words, combined with
+                        </p>
+                        <div class="footer_social">
+                            <a href="">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-instagram" aria-hidden="true"></i>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-pinterest" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 footer-col">
+                    <h4>Opening Hours</h4>
+                    <p>Everyday</p>
+                    <p>10.00 Am -10.00 Pm</p>
+                </div>
+            </div>
+            <div class="footer-info">
+                <p>
+                    &copy; <span id="displayYear"></span> All Rights Reserved By
+                    <a href="">muhammed dilshihan</a><br /><br />
+                    &copy; <span id="displayYear"></span> Distributed By
+                    <a href="" target="_blank">dilshihan</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- jQery -->
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <!-- popper js -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <!-- bootstrap js -->
+    <script src="/js/bootstrap.js"></script>
+    <!-- owl slider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- isotope js -->
+    <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
+    <!-- nice select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <!-- custom js -->
+    <script src="/js/custom.js"></script>
+    <!-- Google Map -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
+    <script>
+        // Tab navigation
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabLinks = document.querySelectorAll('.sidebar_nav a[data-tab]');
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    // Remove active class from all tabs and links
+                    document.querySelectorAll('.tab_content').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+
+                    document.querySelectorAll('.sidebar_nav a').forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+
+                    // Add active class to selected tab and link
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                    this.classList.add('active');
+                });
+            });
+
+            // Edit profile toggle
+            document.getElementById('edit_profile_btn').addEventListener('click', function () {
+                document.getElementById('profile_view_mode').style.display = 'none';
+                document.getElementById('profile_edit_mode').style.display = 'block';
+            });
+
+            // Cancel edit profile
+            document.getElementById('cancel_edit_btn').addEventListener('click', function () {
+                document.getElementById('profile_edit_mode').style.display = 'none';
+                document.getElementById('profile_view_mode').style.display = 'block';
+            });
+
+            // Form submission handlers
+            document.getElementById('profile-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                // Here you would handle the form submission with AJAX
+
+                // Show success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Profile Updated!',
+                    text: 'Your profile information has been updated successfully.',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // Return to view mode after update
+                    document.getElementById('profile_edit_mode').style.display = 'none';
+                    document.getElementById('profile_view_mode').style.display = 'block';
+
+                    // In a real application, you would update the displayed info here
+                    // based on the form values
+                });
+            });
+
+            document.getElementById('password-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Password Updated!',
+                    text: 'Your password has been changed successfully.',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            });
+        });
+
+        // Header scroll behavior
+        let lastScrollTop = 0;
+        const header = document.querySelector(".header_section");
+        let headerHeight = header.offsetHeight;
+
+        window.addEventListener(
+            "scroll",
+            function () {
+                let currentScroll =
+                    window.pageYOffset || document.documentElement.scrollTop;
+
+                if (currentScroll > lastScrollTop && currentScroll > headerHeight) {
+                    // Scrolling down
+                    header.style.transform = "translateY(-100%)";
+                } else {
+                    // Scrolling up
+                    header.style.transform = "translateY(0)";
+                }
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            },
+            false
+        );
+    </script>
+</body>
+
+</html>
