@@ -94,7 +94,7 @@ body {
 .user_option {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 5px;
 }
 
 .user_option a {

@@ -33,6 +33,32 @@
         width: 20px;
         text-align: center;
       }
+      .sidebar_nav li form button {
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        color: #212529;
+        cursor: pointer;
+        padding: 12px 15px;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: inherit;
+        font-family: inherit;
+      }
+      .sidebar_nav li form button:hover {
+        background-color: #ffbe33;
+        color: #ffffff;
+      }
+      .sidebar_nav li form {
+        display: block;
+        width: 100%;
+      }
+      .sidebar_nav li form button i {
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+      }
       .profile_container {
         background-color: #ffffff;
         border-radius: 8px;
@@ -213,7 +239,32 @@
       .profile_picture_upload {
         display: none;
       }
-
+      .profile_avatar {
+        position: relative;
+        width: 100px;
+        height: 100px;
+    }
+    .camera-icon {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: #007bff;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 2px solid white;
+    }
+    .camera-icon i {
+        color: white;
+        font-size: 14px;
+    }
+    .camera-icon:hover {
+        background-color: #0056b3;
+    }
       .header_section {
         background: rgba(255, 255, 255, 0.95);
         backdrop-filter: blur(10px);

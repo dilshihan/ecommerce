@@ -15,7 +15,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="/images/favicon.png" type="" />
 
-    <title>SNACK STORM</title>
+    <title>SNACK STORM - About</title>
 
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css" />
@@ -85,9 +85,6 @@
                 </li>
               </ul>
               <div class="user_option">
-                <a href="/user/userprofile" class="user_link">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                </a>
                 <a class="cart_link" href="/user/cart">
                   <svg
                     version="1.1"
@@ -148,6 +145,13 @@
                     <i class="fa fa-search" aria-hidden="true"></i>
                   </button>
                 </form>
+                <a href="/user/userprofile" class="user_link">
+                  <% if (user && user.image) { %>
+                    <img src="<%= user.image %>" style="width: 30px; height: 30px; object-fit: cover; border-radius: 50%;" alt="Profile" />
+                  <% } else { %>
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                  <% } %>
+                </a>
               </div>
             </div>
           </nav>

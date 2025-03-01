@@ -145,6 +145,8 @@
         const inputs = document.querySelectorAll(".otp-input");
         const form = document.getElementById("otpForm");
         const completeOtpInput = document.getElementById("completeOtp");
+        const countdownEl = document.getElementById("countdown");
+        const resendBtn = document.getElementById("resendBtn");
 
         // Auto-focus next input
         inputs.forEach((input, index) => {
@@ -177,17 +179,22 @@
           this.submit();
         });
 
-        // Countdown timer
-        let timeLeft = 60;
-        const countdownEl = document.getElementById("countdown");
-        const resendBtn = document.getElementById("resendBtn");
+        // Modified countdown timer with localStorage
+        let timeLeft;
+        const storageKey = 'otpTimer';
+        
+        // Check if there's a stored countdown value
+        timeLeft = parseInt(localStorage.getItem(storageKey)) || 60;
+        countdownEl.textContent = timeLeft;
 
         const timer = setInterval(() => {
           timeLeft--;
           countdownEl.textContent = timeLeft;
-
+          localStorage.setItem(storageKey, timeLeft);
+          
           if (timeLeft <= 0) {
             clearInterval(timer);
+            localStorage.removeItem(storageKey);
             document.querySelector(".timer").style.display = "none";
             resendBtn.style.display = "inline";
           }

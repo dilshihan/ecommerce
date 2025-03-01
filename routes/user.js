@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const usercontroller = require('../controller/usercontroller')
 const userauth = require('../middleware/userauth')
+const uploadProfilePicture = require("../utils/multer")
 
 
 router.get('/register',userauth.isLogin,usercontroller.loadregister)
@@ -18,6 +19,8 @@ router.post('/add-to-cart',userauth.checksession,userauth.checkBan,usercontrolle
 router.delete('/cart/remove/:productId',userauth.checksession,userauth.checkBan,usercontroller.removefromcart);
 router.get('/productdetails/:id',userauth.checksession,userauth.checkBan,usercontroller.Productdetails)
 router.get('/userprofile',userauth.checksession,userauth.checkBan,usercontroller.loaduserprofile)
+router.post('/update-profile',userauth.checksession,userauth.checkBan,usercontroller.updateprofile)
+router.post('/profile/update-image',uploadProfilePicture,usercontroller.updateprofileimage)
 router.post('/logout',userauth.checksession,usercontroller.logout)
 router.get('/auth/google/callback', usercontroller.handleGoogleCallback)
 router.post('/auth/google/callback', usercontroller.handleGoogleLogin)

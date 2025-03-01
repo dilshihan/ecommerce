@@ -5,6 +5,7 @@ const saltround = 10
 const nodemailer = require('nodemailer')
 const Category = require('../model/categorymodel')
 const cartmodel = require('../model/cartmodel')
+const { use } = require('passport')
 
 
 
@@ -59,8 +60,8 @@ const verifyOTP = async (req, res) => {
         } 
 
         const hashedPassword = await bcrypt.hash(req.session.password, saltround);
-        const newUser = new userschema({ email: req.session.email, password: hashedPassword });
-        await newUser.save();
+        const user = new userschema({ email: req.session.email, password: hashedPassword });
+        await user.save();
 
         req.session.otp = null; // Remove OTP after verification
 
@@ -69,12 +70,10 @@ const verifyOTP = async (req, res) => {
         const catogorys=await Category.find({})
         req.session.user = user._id; //Store ObjectId
 
-
-        res.render('user/home', { products, message: 'Account created successfully' ,catogorys});
+        res.render('user/home', { products,user, message: 'Account created successfully' ,catogorys});
 
     } catch (error) {
         console.log(error);
-        res.render('user/verify', { message: 'Something went wrong' });
     }
 };
 
@@ -179,7 +178,9 @@ const loadmenu = async (req, res) => {
 
 const loadabout = async (req,res)=>{
     try{
-        res.render('user/about')
+        const   userid = req.session.user
+        const user = await userschema.findById(userid) 
+        res.render('user/about',{user})
     }catch(error){
         console.log(error)
     }
@@ -187,7 +188,9 @@ const loadabout = async (req,res)=>{
 
 const loadcontactus = async(req,res)=>{
     try{
-        res.render('user/contactus')
+        const   userid = req.session.user
+        const user = await userschema.findById(userid) 
+        res.render('user/contactus',{user})
     }catch(error){
         console.log(error)
     }
@@ -218,9 +221,10 @@ const Productdetails = async (req, res) => {
         if (!userId) {
             return res.render("user/cart", { cart: [], totalPrice: 0 });
         }
+        const user = await userschema.findById(userId) 
         const cart = await cartmodel.findOne({ userId }).populate("products.productId");
         if (!cart || cart.products.length === 0) {
-            return res.render("user/cart", { cart: [], totalPrice: 0 });
+            return res.render("user/cart", { cart: [], totalPrice: 0 ,user});
         }
         const cartItems = cart.products.map((item) => ({
             id: item.productId._id,
@@ -230,7 +234,7 @@ const Productdetails = async (req, res) => {
             quantity: item.quantity,
         }));
         const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-        res.render("user/cart", { cart: cartItems, totalPrice });
+        res.render("user/cart", { cart: cartItems, totalPrice,user });
     } catch (error) {
         console.error(error);
     }
@@ -318,16 +322,66 @@ const removefromcart = async (req, res) => {
 
 const loaduserprofile = async(req,res)=>{
     try{
-        res.render('user/userprofile')
+        const   userid = req.session.user 
+        const user = await userschema.findById(userid) 
+        if (!user) {
+            return res.status(404).render('error', { message: 'User not found' });
+        }
+        res.render('user/userprofile',{user})
     }catch(error){
         console.log(error)
+        res.status(500).render('error', { message: 'Internal server error' });
+    }
+}  
+
+const updateprofile = async(req,res)=>{
+    try{
+        const userId=req.session.user
+        const {name,phoneNumber}=req.body
+
+        const updateuser = await userschema.findByIdAndUpdate(userId,{ name: name, phoneNumber: phoneNumber},{new:true})
+        if (!updateuser) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.redirect('/user/userprofile')
+    }catch(error){
+        console.log(error)
+        res.status(500).json({ success: false, message: 'Error updating profile' });
+    }
+}
+
+const updateprofileimage = async(req,res)=>{
+    try {
+        const userId = req.session.user;
+
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'No file uploaded' });
+        }
+
+        const imageUrl = `/uploads/profile_pictures/${req.file.filename}`;
+
+        const updatedUser = await userschema.findByIdAndUpdate(
+            userId, 
+            { image: imageUrl }, 
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        res.json({ success: true, message: 'Profile image updated successfully', imageUrl });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error updating profile image' });
     }
 }
 
 const handleGoogleLogin = async (req, res) => {
     try {
         const { token, userData } = req.body;
-        
+                
         // Check if user already exists
         let user = await userschema.findOne({ email: userData.email });
         
@@ -335,7 +389,7 @@ const handleGoogleLogin = async (req, res) => {
             // Create new user if doesn't exist
             user = new userschema({
                 email: userData.email,
-                // Store a random password since Google auth doesn't provide one
+                image:userData.picture,
                 password: await bcrypt.hash(Math.random().toString(36).slice(-8), saltround),
                 status: 'Active'
             });
@@ -414,5 +468,6 @@ module.exports={registerUser,loadregister,loginUser,
                verifyOTP,resendOTP,logout,Loadhome,
                loadmenu,loadabout,loadcontactus,
                Productdetails,loadcart,addtocart,
-               removefromcart,loaduserprofile,
+               removefromcart,loaduserprofile,updateprofile,
+               updateprofileimage,
                handleGoogleLogin,handleGoogleCallback}
