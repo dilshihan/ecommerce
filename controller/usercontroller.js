@@ -323,9 +323,22 @@ const removefromcart = async (req, res) => {
 
 const loadcheckout = async (req,res)=>{
     try{
-        res.render('user/checkout')
+        
+        const user = await userschema.findById(req.session.user);
+        if (!user) {
+            return res.status(404).send("User not found");
+        }
+        const addresses = await addressmodel.find({ userId: user._id });    
+        if (!addresses.length) {
+            return res.render('user/checkout', { defaultAddress: null });
+        }
+        const defaultAddress = addresses.find(address => address.isDefault) || addresses[0];
+
+
+        res.render('user/checkout',{defaultAddress})    
     }catch(error){
         console.log(error)
+        res.status(500).send("Error loading checkout page");
     }
 }
 
@@ -419,7 +432,6 @@ const addaddress = async (req, res) => {
             zipCode,
             isDefault: shouldBeDefault
         });
-
         await newAddress.save();
 
         res.redirect('/user/userprofile'); 

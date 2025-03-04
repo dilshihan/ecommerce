@@ -150,6 +150,29 @@
                   Change Address
                 </button>
               </h3>
+              
+              <!-- Current Address Display - Initially Visible -->
+              <div id="current-address-display" class="current_address_display">
+                <h4>Delivery Address</h4>
+                <% if (defaultAddress) { %>
+                    <div class="address_info">
+                        <p><strong><%= defaultAddress.fullname %></strong></p>
+                        <p><%= defaultAddress.streetAddress %>, <%= defaultAddress.city %></p>
+                        <p><%= defaultAddress.state %>, <%= defaultAddress.zipCode %></p>
+                        <p>Phone: <%= defaultAddress.phoneNumber %></p>
+                    </div>
+                <% } else { %>
+                    <p>No address found. Please add an address.</p>
+                <% } %>
+            </div>
+            
+            
+            
+              
+              <!-- Add New Address Button -->
+              <button id="add-address-btn" class="add_new_address_btn">Add New Address</button>
+              
+              <!-- Address Form - Initially Hidden -->
               <form id="checkout-form">
                 <div class="row">
                   <div class="col-md-6">
@@ -223,6 +246,8 @@
                   <label class="form_label">Delivery Instructions (Optional)</label>
                   <textarea class="form_input" id="deliveryInstructions" rows="3" placeholder="Special instructions for delivery..."></textarea>
                 </div>
+                
+                <button type="button" id="use-address-btn" class="use_current_address_btn">Use Current Address</button>
               </form>
             </div>
             
@@ -232,19 +257,11 @@
                 <div class="payment_option active" onclick="selectPayment('credit')">
                   <input type="radio" name="payment-method" id="credit" class="payment_radio" checked>
                   <label for="credit">Credit / Debit Card</label>
-                  <div class="payment_logo">
-                    <img src="/api/placeholder/45/30" alt="Visa">
-                    <img src="/api/placeholder/45/30" alt="Mastercard">
-                    <img src="/api/placeholder/45/30" alt="Amex">
-                  </div>
                 </div>
                 
                 <div class="payment_option" onclick="selectPayment('paypal')">
                   <input type="radio" name="payment-method" id="paypal" class="payment_radio">
                   <label for="paypal">PayPal</label>
-                  <div class="payment_logo">
-                    <img src="/api/placeholder/45/30" alt="PayPal">
-                  </div>
                 </div>
                 
                 <div class="payment_option" onclick="selectPayment('cod')">
@@ -254,13 +271,6 @@
               </div>
               
               <div id="credit-details" class="payment_details active">
-                <div class="card_icons">
-                  <img src="/api/placeholder/45/30" alt="Visa">
-                  <img src="/api/placeholder/45/30" alt="Mastercard">
-                  <img src="/api/placeholder/45/30" alt="Amex">
-                  <img src="/api/placeholder/45/30" alt="Discover">
-                </div>
-                
                 <div class="form_group">
                   <label class="form_label">Card Number*</label>
                   <input type="text" class="form_input" placeholder="1234 5678 9012 3456" required>
@@ -368,7 +378,7 @@
         
         <div id="savedAddresses">
           <!-- Saved addresses will be listed here -->
-          <div class="saved_address" onclick="selectAddress(this, 0)">
+          <div class="saved_address selected" onclick="selectAddress(this, 0)">
             <div class="saved_address_title">Home</div>
             <div class="saved_address_details">
               123 Main Street, Apt 4B<br>
@@ -388,7 +398,7 @@
         </div>
         
         <div class="address_actions">
-          <button class="add_new_address_btn">Add New Address</button>
+          <button class="add_new_address_btn" onclick="showAddressForm()">Add New Address</button>
           <button class="use_selected_address_btn" onclick="useSelectedAddress()">Use This Address</button>
         </div>
       </div>
@@ -464,10 +474,7 @@
     <script src="/js/jquery-3.4.1.min.js"></script>
     <!-- popper js -->
     <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"crossorigin="anonymous"></script>
     <!-- bootstrap js -->
     <script src="/js/bootstrap.js"></script>
     <!-- owl slider -->

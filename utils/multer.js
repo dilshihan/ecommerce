@@ -41,6 +41,6 @@ const uploadProfilePicture = multer({
 }).single('profilePicture');
 
 
-module.exports = upload
-module.exports = uploadProfilePicture
+module.exports ={upload,uploadProfilePicture}
+
 

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const usercontroller = require('../controller/usercontroller')
 const userauth = require('../middleware/userauth')
-const uploadProfilePicture = require("../utils/multer")
+const {uploadProfilePicture} = require("../utils/multer")
 
 
 router.get('/register',userauth.isLogin,usercontroller.loadregister)
