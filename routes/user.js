@@ -18,9 +18,13 @@ router.get('/cart',userauth.checksession,userauth.checkBan,usercontroller.loadca
 router.post('/add-to-cart',userauth.checksession,userauth.checkBan,usercontroller.addtocart)
 router.delete('/cart/remove/:productId',userauth.checksession,userauth.checkBan,usercontroller.removefromcart);
 router.get('/productdetails/:id',userauth.checksession,userauth.checkBan,usercontroller.Productdetails)
+router.get('/checkout',userauth.checksession,userauth.checkBan,usercontroller.loadcheckout)
 router.get('/userprofile',userauth.checksession,userauth.checkBan,usercontroller.loaduserprofile)
 router.post('/update-profile',userauth.checksession,userauth.checkBan,usercontroller.updateprofile)
 router.post('/profile/update-image',uploadProfilePicture,usercontroller.updateprofileimage)
+router.post('/add-address',userauth.checksession,userauth.checkBan,usercontroller.addaddress)
+router.post('/edit-address',userauth.checksession,userauth.checkBan,usercontroller.editaddress)
+router.delete('/delete/:id',userauth.checksession,userauth.checkBan,usercontroller.deleteaddress)
 router.post('/logout',userauth.checksession,usercontroller.logout)
 router.get('/auth/google/callback', usercontroller.handleGoogleCallback)
 router.post('/auth/google/callback', usercontroller.handleGoogleLogin)

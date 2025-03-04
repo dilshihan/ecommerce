@@ -5,6 +5,7 @@ const saltround = 10
 const nodemailer = require('nodemailer')
 const Category = require('../model/categorymodel')
 const cartmodel = require('../model/cartmodel')
+const addressmodel = require('../model/addressmodel')
 const { use } = require('passport')
 
 
@@ -320,14 +321,32 @@ const removefromcart = async (req, res) => {
     }
 };  
 
+const loadcheckout = async (req,res)=>{
+    try{
+        res.render('user/checkout')
+    }catch(error){
+        console.log(error)
+    }
+}
+
 const loaduserprofile = async(req,res)=>{
     try{
-        const   userid = req.session.user 
+        const userid = req.session.user 
         const user = await userschema.findById(userid) 
         if (!user) {
             return res.status(404).render('error', { message: 'User not found' });
         }
-        res.render('user/userprofile',{user})
+        
+        const addresses = await addressmodel.find({ userId: user._id })        
+        if(!addresses) {
+            addresses = [];
+        }
+        
+        res.render('user/userprofile',{
+            user: user,
+            addresses: addresses
+        });
+
     }catch(error){
         console.log(error)
         res.status(500).render('error', { message: 'Internal server error' });
@@ -375,6 +394,88 @@ const updateprofileimage = async(req,res)=>{
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Error updating profile image' });
+    }
+}
+
+const addaddress = async (req, res) => {
+    try {  
+        const userId = req.session.user;
+        const { fullName, phoneNumber, street, city, state, zipCode ,isDefault} = req.body;
+
+        const existingDefaultAddress = await addressmodel.findOne({ userId, isDefault: true });
+        if (isDefault === 'on' && existingDefaultAddress) {
+            await addressmodel.updateOne({ userId, isDefault: true }, { isDefault: false });
+        }
+        const shouldBeDefault = !existingDefaultAddress || isDefault === 'on';
+
+        
+        const newAddress = new addressmodel({
+            userId: userId,
+            fullname:fullName,
+            phoneNumber,
+            streetAddress:street,
+            city,
+            state,
+            zipCode,
+            isDefault: shouldBeDefault
+        });
+
+        await newAddress.save();
+
+        res.redirect('/user/userprofile'); 
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'Error adding address' });
+    }
+};
+
+const editaddress = async (req, res) => {
+    try {
+        const userId = req.session.user;
+        const addressId = req.body.id;
+        const { fullName, phoneNumber, street, city, state, zipCode, isDefault } = req.body;
+        if (isDefault === 'on') {
+            await addressmodel.updateMany(
+                { userId, _id: { $ne: addressId } },
+                { isDefault: false }
+            );
+        }
+        // Update the address
+        const updatedAddress = await addressmodel.findByIdAndUpdate(
+            addressId,
+            {
+                fullname: fullName,
+                phoneNumber,
+                streetAddress: street,
+                city,
+                state,
+                zipCode,
+                isDefault: isDefault === 'on'
+            },
+            { new: true }
+        );
+        if (!updatedAddress) {
+            return res.status(404).json({ success: false, message: 'Address not found' });
+        }
+
+        res.redirect('/user/userprofile');
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: 'Error updating address' });
+    }
+};
+
+const deleteaddress = async (req,res)=>{
+    try {
+        const addressId = req.params.id;
+        const deletedAddress = await addressmodel.findByIdAndDelete(addressId);
+        if (!deletedAddress) {
+            return res.status(404).json({ success: false, message: 'Address not found' });
+        }
+        res.json({ success: true, message: 'Address deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 }
 
@@ -468,6 +569,7 @@ module.exports={registerUser,loadregister,loginUser,
                verifyOTP,resendOTP,logout,Loadhome,
                loadmenu,loadabout,loadcontactus,
                Productdetails,loadcart,addtocart,
-               removefromcart,loaduserprofile,updateprofile,
-               updateprofileimage,
+               removefromcart,loadcheckout,loaduserprofile,
+               updateprofile,updateprofileimage,addaddress,
+               editaddress,deleteaddress,
                handleGoogleLogin,handleGoogleCallback}
